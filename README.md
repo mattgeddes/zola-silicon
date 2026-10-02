@@ -213,10 +213,89 @@ keeps following OS changes while you have not made one.
 
 ### Recolouring the whole site
 
-Edit the colour tokens in section 1 of `main.css` and their dark counterparts
-in section 2. Nothing else needs touching. To go further, change
-`primary` and `accent` under `[extra.brand]` in `config.toml`, which also drive
-the inline logo and the favicon you regenerate in "Graphics" below.
+**Adapt the theme to your brand's palette** — don't fit your graphics to the
+theme's. Recolouring is a single, self-contained edit you can do once and forget;
+re-drawing artwork is a permanent tax on every illustration, blog cover and
+diagram you will ever add, because those are standalone files loaded through
+`<img>` and cannot inherit the theme. (The 62 icons *do* inherit, via
+`currentColor` — those adapt for free.)
+
+#### Where the colour actually lives
+
+Roughly in order of how much you should care:
+
+| Where | What | How hard |
+| --- | --- | --- |
+| `static/css/main.css` §1 and §2 | Every colour token, in both themes | The main job — one edit per theme |
+| `config.toml` → `[extra.brand]` | `primary`, `accent` | Feeds the inline header/footer logo tile |
+| `content/_index.md` → `[extra.hero] image` | The hero illustration | Swap the file; recolouring needs a redraw |
+| `static/favicon.svg`, `og.svg` | Favicon and social card | Baked hexes; edit and re-rasterise |
+| `static/site.webmanifest` | `theme_color`, `background_color` | Two values |
+| `templates/base.html` | Two `<meta name="theme-color">` values | Two values |
+| `templates/base.html` → gate stub | Inline `<style>` on the "section off" page | Two values |
+
+The 12 illustrations under `static/images/` use roughly 35 hard-coded hexes
+between them. They are deliberately dark panels that read correctly against
+both themes, so you can leave them alone and let them pass for product
+screenshots — a coherent look, at no cost. Recolouring them to a light brand
+palette means a redraw, not a config change.
+
+#### The nine tokens you actually change
+
+In section 1 (light) and section 2 (dark) of `main.css`:
+
+```
+--primary            --primary-hover        --primary-contrast
+--primary-soft       --primary-soft-text
+--accent             --accent-soft          --accent-text
+--ring
+```
+
+Plus the stop colours inside `--gradient-brand` and `--gradient-text`, and
+`--header-bg` if your brand is dark enough to want a darker translucent bar.
+
+**Leave the neutral ramp alone** unless your brand is strictly monochrome:
+
+```
+--bg  --bg-subtle  --surface  --surface-2  --surface-3
+--border  --border-strong
+--text  --text-muted  --text-subtle  --text-invert
+```
+
+That ramp is brand-agnostic and is most of what makes the site read as sleek
+and considered. Swapping the nine brand tokens above is the 80% of the work
+and preserves the look; rebuilding the neutrals is the 20% that usually makes
+it worse.
+
+#### Three things to get right
+
+1. **Check the two tokens that actually break.** When you replace `--primary`,
+   re-check `--primary-contrast` (text and buttons *sitting on* your primary
+   fill) and `--primary-soft-text` (text on the pale `--primary-soft` tint).
+   These are the pair most likely to fail contrast after a rebrand, and they
+   are the reason you should not treat the swap as a find-and-replace. Aim for
+   WCAG AA: 4.5:1 for body text, 3:1 for large text and UI boundaries.
+2. **Keep your logo on a filled brand tile.** The mark in this template is
+   white-on-brand inside a rounded square, which decouples its legibility from
+   whatever surface it lands on. If you swap to a bare wordmark, you now have
+   to prove it passes contrast on the header, the footer and every surface a
+   card can take — three more checks, forever.
+3. **Give `--accent` real distance from `--primary`.** The brand gradient
+   interpolates between them, so aim for roughly 40–60° of hue separation. Too
+   close and the gradient reads as one flat colour; too far and the
+   illustrations stop matching the site. Cyan against indigo is the current
+   pairing; a single-hue accent is a legitimate choice too, but then change
+   `--gradient-brand` to lean on lightness rather than hue.
+
+#### A practical order of operations
+
+1. Pick `--primary` and `--accent`, and set them in `[extra.brand]` so the logo
+   tile follows.
+2. Set both in §1 and §2 of `main.css`, along with the five derived tokens.
+3. Check `--primary-contrast` and `--primary-soft-text` with a contrast
+   checker, in both themes.
+4. Update the favicon and social card last, from `static/favicon.svg`.
+5. Leave the illustrations alone unless the brand demands it.
 
 ## Graphics
 
@@ -358,6 +437,17 @@ is why the templates guard every optional field:
 
 ## Licence
 
-Template code is MIT (`LICENSE`). Artwork and icons are CC0
-(`LICENSE-ARTWORK.md`). The sample content is fiction written for this
-template; replace it.
+Two, deliberately:
+
+- **Template code — MIT** (`LICENSE`). The ecosystem norm: of the Zola
+  repositories named `zola-theme`, roughly 60% declare MIT, and it is the
+  plurality across `topic:zola` as well. It allows commercial use, modification,
+  redistribution, private use and sublicensing, with no warranty and one
+  obligation: keep the copyright notice.
+- **Artwork and icons — CC0 1.0** (`LICENSE-ARTWORK.md`). Public domain
+  dedication. No attribution required, which is why the illustrations can be
+  swapped for your own without leaving a credit behind.
+
+If you fork this, keep both files and the notice in them. `LICENSE-ARTWORK.md`
+is the one to drop if you replace all the artwork, and the one you definitely
+want to leave in place if you keep any of it.
