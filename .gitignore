@@ -13,3 +13,6 @@ Thumbs.db
 # Env files, if you add any
 .env
 .env.local
+
+# Local session tracking, not part of the template
+opencode-session.txt

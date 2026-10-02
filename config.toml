@@ -117,8 +117,8 @@ name = "Kestrel"
 # Rendered after the name in the header logo. Leave empty for a logotype.
 suffix = "Labs"
 # Two or three hex colours used for the generated favicon/OG artwork.
-primary = "#6366f1"
-accent = "#22d3ee"
+primary = "#137C7A"   # Secure Teal
+accent = "#39C6D6"    # Signal Cyan
 
 # -----------------------------------------------------------------------------
 # Contact details — used by the contact page and the site footer.
