@@ -1,4 +1,4 @@
-# Icon library for the zola-biz template.
+# Icon library for the zola-silicon template.
 #
 # Each key is an icon name; the value is the inner markup of a 24x24
 # stroked <svg> that inherits `currentColor` from its surroundings.

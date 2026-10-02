@@ -1,0 +1,13 @@
+name = "Zola Silicon"
+description = "An LLM-generated Zola theme for a tech startup"
+tags = []
+license = "MIT"
+homepage = "https://github.com/mattgeddes/zolo-silicon"
+min_version = "0.20.0"
+demo = ""
+
+[extra]
+
+[author]
+name = "Matthew Geddes"
+homepage = "https://incomplete.io"

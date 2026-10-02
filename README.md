@@ -1,4 +1,4 @@
-# zola-biz
+# zola-silicon
 
 A website template for small tech products and tech services, built for the
 [Zola](https://www.getzola.org/) static site generator.

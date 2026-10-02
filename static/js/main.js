@@ -1,4 +1,4 @@
-/* zola-biz — progressive enhancement only. Every feature here has a working
+/* zola-silicon — progressive enhancement only. Every feature here has a working
    no-JS fallback, so the site is fully usable if this file fails to load. */
 (function () {
   "use strict";
