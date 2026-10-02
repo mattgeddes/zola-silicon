@@ -10,14 +10,32 @@
 #}
 
 {% block content %}
-{%- set_global H = section.extra.hero -%}
-{%- set_global FEATURES = section.extra.features -%}
-{%- set_global STEPS = section.extra.steps -%}
-{%- set_global SPLIT = section.extra.split -%}
-{%- set_global LOGOS = section.extra.logos -%}
-{%- set_global FAQ = section.extra.faq -%}
-{%- set_global NEWSLETTER = section.extra.newsletter -%}
-{%- set_global CTA = section.extra.cta -%}
+{#- Every block is optional. A missing key resolves to "" so the block simply
+    does not render, instead of failing the build. This is what lets a site with
+    its own content/_index.md use this template as a starting point. -#}
+{%- set_global X = section.extra -%}
+{%- set_global H = "" -%}
+{%- if "hero" in X -%}{%- set_global H = X.hero -%}{%- endif -%}
+{%- set_global FEATURES = "" -%}
+{%- if "features" in X -%}{%- set_global FEATURES = X.features -%}{%- endif -%}
+{%- set_global STEPS = "" -%}
+{%- if "steps" in X -%}{%- set_global STEPS = X.steps -%}{%- endif -%}
+{%- set_global SPLIT = "" -%}
+{%- if "split" in X -%}{%- set_global SPLIT = X.split -%}{%- endif -%}
+{%- set_global LOGOS = "" -%}
+{%- if "logos" in X -%}{%- set_global LOGOS = X.logos -%}{%- endif -%}
+{%- set_global FAQ = "" -%}
+{%- if "faq" in X -%}{%- set_global FAQ = X.faq -%}{%- endif -%}
+{%- set_global NEWSLETTER = "" -%}
+{%- if "newsletter" in X -%}{%- set_global NEWSLETTER = X.newsletter -%}{%- endif -%}
+{%- set_global CTA = "" -%}
+{%- if "cta" in X -%}{%- set_global CTA = X.cta -%}{%- endif -%}
+{%- set_global LATEST = "" -%}
+{%- if "latest" in X -%}{%- set_global LATEST = X.latest -%}{%- endif -%}
+{%- set_global SECTIONS = [] -%}
+{%- if "sections" in config.extra -%}{%- set_global SECTIONS = config.extra.sections -%}{%- endif -%}
+{%- set_global LATEST_N = 3 -%}
+{%- if "latest_posts" in config.extra -%}{%- set_global LATEST_N = config.extra.latest_posts -%}{%- endif %}
 
 {#- ============================== Hero ============================== -#}
 {% if H %}
@@ -144,16 +162,15 @@
     Resolves the blog section from the home section's `subsections` list.
     Zola exposes those as relative file paths ("blog/_index.md"); the
     normalise step accepts either that or a bare slug. -#}
-{% if "blog" in config.extra.sections and config.extra.sections.blog %}
+{% if "blog" in SECTIONS and SECTIONS.blog %}
 {%- set_global BLOG = "" -%}
 {%- for s in section.subsections -%}
 {%- set_global stem = s | trim_start_matches(pat="/") | replace(from="/_index.md", to="") | trim(pat="/") -%}
 {%- if stem == "blog" -%}{%- set_global BLOG = get_section(path=s) -%}{%- endif -%}
 {%- endfor %}
 {% if BLOG %}
-{%- set_global POSTS = BLOG.pages | sort(attribute="date") | reverse | slice(end=config.extra.latest_posts) %}
+{%- set_global POSTS = BLOG.pages | sort(attribute="date") | reverse | slice(end=LATEST_N) %}
 {% if POSTS | length > 0 %}
-{%- set_global LATEST = section.extra.latest %}
 <section class="section section--subtle">
   <div class="container">
     {{ ui::section_head_from(t=LATEST) }}

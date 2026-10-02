@@ -8,7 +8,8 @@
 #}
 
 {% block content %}
-{%- set_global E = section.extra -%}
+{%- set_global E = "" -%}
+{%- if section.extra is defined and section.extra != "" -%}{%- set_global E = section.extra -%}{%- endif -%}
 {%- set_global PAG = "" -%}
 {%- if paginator is defined -%}{%- set_global PAG = paginator -%}{%- endif -%}
 

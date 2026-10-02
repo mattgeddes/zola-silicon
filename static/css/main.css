@@ -692,6 +692,15 @@ a.badge:hover {
   flex: none;
 }
 
+/* A logo supplied via [extra.brand] logo. Sized to match the built-in mark so
+   it sits correctly whether or not the theme's own text is shown next to it. */
+.site-logo__mark--custom {
+  width: auto;
+  height: 1.9rem;
+  max-width: 9rem;
+  object-fit: contain;
+}
+
 .site-logo__suffix {
   padding: 0.1rem 0.45rem;
   border-radius: var(--radius-pill);

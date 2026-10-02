@@ -1,21 +1,30 @@
 {#-
-  Zola renders this template with only `entries` in scope, so the section
-  switches are read straight out of config.toml with load_data.
+  Zola renders this template with only `entries` in scope - no `config` - so the
+  section switches cannot be read the same way the rest of the site reads them.
+  Reading config.toml with load_data does not help either: that file is the
+  *site's*, and when this repository is used as a theme it never contains the
+  defaults in theme.toml. That combination is what used to break the build for
+  anyone whose site did not redeclare [extra.sections].
 
-  Entries whose first path segment belongs to a section switched off under
-  [extra.sections] are dropped, keeping disabled sections out of search
-  engines as well as out of the navigation.
+  So: filter only when the site itself declares the switches, and otherwise emit
+  everything, which is Zola's own default behaviour. A site that switches a
+  section off and wants it out of the sitemap should declare [extra.sections] in
+  its config.toml - most will have done so anyway to drive the navigation.
 -#}
 {%- set_global CFG = load_data(path="config.toml") -%}
-{%- set_global BASE = CFG.base_url | trim_start_matches(pat="/") -%}
+{%- set_global HAS_SWITCHES = false -%}
+{%- if "extra" in CFG and CFG.extra is defined and "sections" in CFG.extra -%}
+{%- set_global HAS_SWITCHES = true -%}
+{%- endif -%}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- for e in entries -%}
-{%- set_global path = e.permalink | trim_start_matches(pat=BASE) | trim_start_matches(pat="/") -%}
-{%- set_global seg = path | split(pat="/") | first -%}
+{#- First path segment of the absolute permalink, e.g. "blog" from
+    "https://example.com/blog/post/". Empty for the site root. -#}
+{%- set_global path = e.permalink | split(pat="/") | slice(start=3, end=4) | first -%}
 {%- set_global keep = true -%}
-{%- if seg in CFG.extra.sections -%}
-{%- set_global keep = CFG.extra.sections[seg] -%}
+{%- if HAS_SWITCHES and path in CFG.extra.sections -%}
+{%- set_global keep = CFG.extra.sections[path] -%}
 {%- endif -%}
 {%- if keep %}
   <url>

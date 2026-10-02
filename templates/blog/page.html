@@ -8,7 +8,8 @@
 #}
 
 {% block content %}
-{%- set_global E = page.extra -%}
+{%- set_global E = "" -%}
+{%- if page.extra is defined and page.extra != "" -%}{%- set_global E = page.extra -%}{%- endif -%}
 {%- set_global date_label = "" -%}
 {%- if page.date -%}{%- set_global date_label = page.date | date(format="%d %B %Y") -%}{%- endif %}
 

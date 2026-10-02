@@ -1,4 +1,10 @@
 {%- import "partials/icons.html" as m -%}
+{%- set_global SOCIAL = [] -%}
+{%- if "social" in config.extra -%}{%- set_global SOCIAL = config.extra.social -%}{%- endif -%}
+{%- set_global COLUMNS = [] -%}
+{%- if "footer_links" in config.extra -%}{%- set_global COLUMNS = config.extra.footer_links -%}{%- endif -%}
+{%- set_global YEAR = "" -%}
+{%- if "copyright_year" in config.extra -%}{%- set_global YEAR = config.extra.copyright_year -%}{%- endif -%}
 <footer class="site-footer">
   <div class="container">
     <div class="site-footer__top">
@@ -9,9 +15,9 @@
           {% if config.extra.brand.suffix %}<span class="site-logo__suffix">{{ config.extra.brand.suffix }}</span>{% endif %}
         </a>
         <p class="site-footer__blurb">{{ config.description }}</p>
-        {% if config.extra.social %}
+        {% if SOCIAL | length > 0 %}
         <div class="social-row">
-          {%- for s in config.extra.social %}
+          {%- for s in SOCIAL %}
           {{ m::icon_link(name=s.icon, url=s.url, label=s.label) }}
           {%- endfor %}
         </div>
@@ -19,7 +25,7 @@
       </div>
 
       <div class="footer-links">
-        {%- for col in config.extra.footer_links %}
+        {%- for col in COLUMNS %}
         <div>
           <h2 class="footer-links__heading">{{ col.heading }}</h2>
           <ul class="footer-links__list">
@@ -33,7 +39,7 @@
     </div>
 
     <div class="site-footer__bottom">
-      <p>&copy; {{ config.extra.copyright_year }} {{ config.extra.brand.name }}{% if config.extra.brand.suffix %} {{ config.extra.brand.suffix }}{% endif %}</p>
+      <p>&copy; {{ YEAR }} {{ config.extra.brand.name }}{% if config.extra.brand.suffix %} {{ config.extra.brand.suffix }}{% endif %}</p>
       <p>Built with <a href="https://www.getzola.org/" rel="noopener">Zola</a></p>
     </div>
   </div>

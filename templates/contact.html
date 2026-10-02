@@ -10,7 +10,8 @@
 
 {% block content %}
 {%- set_global E = page.extra -%}
-{%- set_global C = config.extra.contact -%}
+{%- set_global C = "" -%}
+{%- if "contact" in config.extra -%}{%- set_global C = config.extra.contact -%}{%- endif -%}
 
 <section class="page-hero">
   <div class="container">
@@ -32,7 +33,7 @@
       <h2 class="contact-aside__title">{% if E.aside_title is defined %}{{ E.aside_title }}{% else %}Get in touch{% endif %}</h2>
 
       <ul class="contact-list">
-        {%- if C.email is defined and C.email %}
+        {%- if C != "" and C.email is defined and C.email %}
         <li>
           <span class="contact-list__icon">{{ m::icon(name="mail", size=18) }}</span>
           <span>
@@ -42,7 +43,7 @@
         </li>
         {%- endif %}
 
-        {%- if C.phone is defined and C.phone %}
+        {%- if C != "" and C.phone is defined and C.phone %}
         <li>
           <span class="contact-list__icon">{{ m::icon(name="phone", size=18) }}</span>
           <span>
@@ -52,7 +53,7 @@
         </li>
         {%- endif %}
 
-        {%- if C.address is defined and C.address %}
+        {%- if C != "" and C.address is defined and C.address %}
         <li>
           <span class="contact-list__icon">{{ m::icon(name="map-pin", size=18) }}</span>
           <span>
@@ -62,7 +63,7 @@
         </li>
         {%- endif %}
 
-        {%- if C.hours is defined and C.hours %}
+        {%- if C != "" and C.hours is defined and C.hours %}
         <li>
           <span class="contact-list__icon">{{ m::icon(name="clock", size=18) }}</span>
           <span>
@@ -73,7 +74,7 @@
         {%- endif %}
       </ul>
 
-      {%- if C.email is defined and C.email %}
+      {%- if C != "" and C.email is defined and C.email %}
       <div class="contact-aside__actions">
         {{ m::button(text="Send an email", url="mailto:" ~ C.email, variant="primary", icon="mail") }}
       </div>

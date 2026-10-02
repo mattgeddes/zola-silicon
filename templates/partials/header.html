@@ -8,6 +8,13 @@
 {%- if current_path is defined -%}{%- set_global PATH = current_path -%}{%- endif -%}
 {%- set_global CUR_SEG = PATH | trim_start_matches(pat="/") | split(pat="/") | first -%}
 
+{#- Optional settings, resolved to harmless defaults so a site that omits them
+    gets a working page rather than a build error. -#}
+{%- set_global SECTIONS = [] -%}
+{%- if "sections" in config.extra -%}{%- set_global SECTIONS = config.extra.sections -%}{%- endif -%}
+{%- set_global NAV = [] -%}
+{%- if "nav" in config.extra -%}{%- set_global NAV = config.extra.nav -%}{%- endif -%}
+
 <header class="site-header" id="site-header" data-scrolled="false">
   <div class="container site-header__inner">
     <a class="site-logo" href="/">
@@ -18,7 +25,7 @@
 
     <nav class="site-nav" id="site-nav" data-open="false" aria-label="Main">
       <ul class="site-nav__list">
-        {%- for item in config.extra.nav %}
+        {%- for item in NAV %}
         {%- set_global item_visible = true -%}
         {%- if item.key is defined -%}
         {%- set_global item_visible = false -%}

@@ -2,10 +2,19 @@
   The one place an <svg> is built. Kept import-free so that every other module
   can reach it through an explicit alias rather than `self::`, which Tera only
   resolves reliably when the macro is invoked directly.
+
+  The icon library lives in a data file rather than in template code so it stays
+  editable without touching Tera. `extra.icon_data_path` decides where to load
+  it from; see the README section on using this repository as a theme for why a
+  consumer may need to change it.
 #}
 
 {% macro icon(name, cls="icon", size=24, label="") %}
-{%- set_global ICONS = load_data(path="data/icons.toml") -%}
+{%- set_global ICON_PATH = "data/icons.toml" -%}
+{%- if config.extra.icon_data_path is defined -%}
+{%- set_global ICON_PATH = config.extra.icon_data_path -%}
+{%- endif -%}
+{%- set_global ICONS = load_data(path=ICON_PATH) -%}
 {%- set_global body = "" -%}
 {%- if name in ICONS -%}
 {%- set_global body = ICONS[name].svg -%}
@@ -19,7 +28,6 @@
 <svg class="{{ cls }}" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">{{ body | safe }}</svg>
 {%- endif -%}
 {% endmacro icon %}
-
 {#- Emits rel/target for off-site links and nothing for on-site ones, so every
     anchor can just include it. -#}
 {% macro external_attrs(url) %}

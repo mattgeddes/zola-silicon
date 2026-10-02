@@ -1,5 +1,12 @@
+{#- Only `entries` is in scope here, so base_url comes from the site's own
+    config.toml. That is always present and always has base_url, unlike the
+    [extra] defaults, so load_data is safe for this one value. -#}
 {%- set_global CFG = load_data(path="config.toml") -%}
+{%- set_global SITE = "" -%}
+{%- if CFG.base_url is defined -%}{%- set_global SITE = CFG.base_url -%}{%- endif -%}
 User-agent: *
 Allow: /
 
-Sitemap: {{ CFG.base_url }}/sitemap.xml
+{%- if SITE != "" %}
+Sitemap: {{ SITE }}/sitemap.xml
+{%- endif %}

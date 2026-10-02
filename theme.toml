@@ -1,13 +1,152 @@
-name = "Zola Silicon"
-description = "An LLM-generated Zola theme for a tech startup"
-tags = []
-license = "MIT"
-homepage = "https://github.com/mattgeddes/zolo-silicon"
-min_version = "0.20.0"
-demo = ""
-
+# theme.toml - defaults for sites that use this repository as a Zola theme.
+#
+# GENERATED FILE - do not edit by hand.
+# Source: the [extra] section of config.toml
+# Regenerate: python3 scripts/generate-theme-toml.py
+# Verify:     python3 scripts/generate-theme-toml.py --check
+#
+# How Zola uses this file
+# -----------------------
+# Zola reads ONLY the [extra] table below. Any other key in this file is
+# ignored. The theme's config.toml is never read at all, which is why every
+# value this template's templates read has to appear here.
+#
+# Your site overrides these defaults in its own config.toml:
+#
+#     theme = "your-theme-dir"        # a bare directory name, not "themes/..."
+#
+#     [extra.brand]
+#     name = "Your Company"           # wins; everything else is inherited
+#
+# Nested tables merge key by key. Arrays of tables - nav, footer_links,
+# social - do NOT merge: your site either supplies the whole list or inherits
+# the whole list, never a blend of the two. Giving a theme default a different
+# TOML type to the one you set is a hard build error, so keep the shapes the
+# same.
 [extra]
+# Where the icon library is loaded from, relative to the site root. See the
+# "Using this template as a Zola theme" section of the README: when your site
+# consumes this repo as a theme, Zola does not search the theme's data/
+# directory, so either copy data/icons.toml into your own data/ or point this
+# at "themes/<your-theme-dir>/data/icons.toml".
+icon_data_path = "data/icons.toml"
 
-[author]
-name = "Matthew Geddes"
-homepage = "https://incomplete.io"
+# Number of blog posts shown on the home page.
+latest_posts = 3
+
+# Shown in the footer. Bump this each January.
+copyright_year = 2026
+
+[extra.sections]
+products = true
+services = true
+blog = true
+contact = true
+
+# -----------------------------------------------------------------------------
+# Navigation
+# -----------------------------------------------------------------------------
+# Each entry is a path relative to the site root. "key" must match a key in
+# [extra.sections] above for the link to be shown, so removing a section from
+# the nav is a single edit in either table.
+# -----------------------------------------------------------------------------
+[[extra.nav]]
+key = "products"
+label = "Products"
+url = "/products/"
+
+[[extra.nav]]
+key = "services"
+label = "Services"
+url = "/services/"
+
+[[extra.nav]]
+key = "blog"
+label = "Blog"
+url = "/blog/"
+
+[[extra.nav]]
+key = "contact"
+label = "Contact"
+url = "/contact/"
+
+# Always shown, regardless of [extra.sections]. Delete this entry, or add your
+# own `key`/`label`/`url` triples above it, to shape the nav however you like.
+[[extra.nav]]
+label = "FAQ"
+url = "/#faq"
+
+# -----------------------------------------------------------------------------
+# Brand
+# -----------------------------------------------------------------------------
+[extra.brand]
+name = "Kestrel"
+# Rendered after the name in the header logo. Leave empty for a logotype.
+suffix = "Labs"
+# Two or three hex colours used for the generated favicon/OG artwork.
+primary = "#137C7A"   # Secure Teal
+accent = "#39C6D6"    # Signal Cyan
+
+# Optional path to your own logo, relative to the site root (put the file in
+# static/). When set, the header and footer render this instead of the built-in
+# mark. Leave empty to keep the built-in one. The mark is drawn on a filled
+# brand-coloured tile, so an SVG with a transparent background works well; a
+# wordmark works too, and you can hide the text beside it by leaving
+# `suffix` empty and overriding the name in your own config.
+logo = ""
+
+# -----------------------------------------------------------------------------
+# Contact details — used by the contact page and the site footer.
+# -----------------------------------------------------------------------------
+[extra.contact]
+email = "hello@kestrel.example.com"
+phone = "+1 (415) 555-0142"
+address = "Studio 4, Pier 9\\nSan Francisco, CA 94111"
+hours = "Mon–Fri, 09:00–18:00 PT"
+
+# -----------------------------------------------------------------------------
+# Footer link columns
+# -----------------------------------------------------------------------------
+[[extra.footer_links]]
+heading = "Product"
+links = [
+  { label = "Overview", url = "/products/" },
+  { label = "Contact", url = "/contact/" },
+]
+
+[[extra.footer_links]]
+heading = "Company"
+links = [
+  { label = "Blog", url = "/blog/" },
+  { label = "Contact", url = "/contact/" },
+]
+
+[[extra.footer_links]]
+heading = "Legal"
+links = [
+  { label = "Privacy", url = "/privacy/" },
+  { label = "Terms", url = "/terms/" },
+]
+
+# -----------------------------------------------------------------------------
+# Social links — icon names come from templates/partials/icons.html
+# -----------------------------------------------------------------------------
+[[extra.social]]
+icon = "github"
+label = "GitHub"
+url = "https://github.com/"
+
+[[extra.social]]
+icon = "mastodon"
+label = "Mastodon"
+url = "https://mastodon.social/"
+
+[[extra.social]]
+icon = "linkedin"
+label = "LinkedIn"
+url = "https://www.linkedin.com/"
+
+[[extra.social]]
+icon = "rss"
+label = "Atom feed"
+url = "/blog/atom.xml"

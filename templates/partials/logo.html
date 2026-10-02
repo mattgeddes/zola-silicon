@@ -1,8 +1,20 @@
-{#- Kestrel mark: a descending wedge that reads as both a stooping bird and a
-    falling trend line. Kept as a flat shape with no <defs> so it can be
-    included more than once per page without colliding gradient IDs.
-    The gradient version lives in static/images/logo.svg. -#}
+{#-
+  The brand mark.
+
+  Set `[extra.brand] logo` in your config to a path (relative to the site root)
+  and this renders your file instead of the built-in mark. Leave it empty and
+  you get the built-in wedge on a filled brand-coloured tile.
+
+  The built-in version is deliberately a flat shape with no <defs>: it is
+  included more than once per page, and a <linearGradient> would need a unique
+  id per instance to avoid a duplicate-id invalidity. The gradient version lives
+  in static/images/logo.svg.
+-#}
+{%- if config.extra.brand.logo is defined and config.extra.brand.logo != "" -%}
+<img class="site-logo__mark site-logo__mark--custom" src="{{ config.extra.brand.logo | safe }}" alt="" height="32" width="32" decoding="async">
+{%- else -%}
 <svg class="site-logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
   <rect width="32" height="32" rx="8" fill="{{ config.extra.brand.primary }}"/>
   <path d="M23.5 8.5 15 17.2h4.6l-1.1 6.6 8.4-9.5h-4.9l1.5-5.8Z" fill="#fff"/>
 </svg>
+{%- endif -%}

@@ -78,6 +78,136 @@ label = "Products"
 url = "/products/"
 ```
 
+## Using this template as a Zola theme
+
+You can point a separate Zola site at this repository with `git submodule`, or
+copy `templates/` and `static/` across. This section is the submodule route.
+
+```sh
+git submodule add git@github.com:mattgeddes/zola-silicon.git themes/zola-silicon
+```
+
+In your site's `config.toml`:
+
+```toml
+base_url = "https://yoursite.example.com"
+title = "Your Site"
+theme = "zola-silicon"          # a bare directory name — NOT "themes/zola-silicon"
+```
+
+Zola prepends `themes/` itself. Writing `theme = "themes/zola-silicon"` makes it
+look for `themes/themes/zola-silicon` and fail.
+
+### Two things you must know
+
+**1. Zola never reads this repo's `config.toml`.** It reads only the `[extra]`
+table of `theme.toml`. That is why `theme.toml` exists and why every setting is
+mirrored in it.
+
+**2. Your site's `config.toml` always wins.** `theme.toml` holds *defaults*;
+anything you declare overrides them. Nested tables merge key by key, so you
+override one value and inherit the rest:
+
+```toml
+[extra.brand]
+name = "Your Company"      # yours; primary/accent/suffix are inherited
+```
+
+Three rules that follow from Zola's merge implementation:
+
+- **Arrays of tables do not merge.** `[[extra.nav]]`, `[[extra.social]]` and
+  `[[extra.footer_links]]` are all-or-nothing: you either supply the whole list
+  or inherit the whole list, never a blend.
+- **Changing a value's TOML type is a hard build error.** Writing
+  `brand = "Acme"` under `[extra]` when the theme has an `[extra.brand]` table
+  fails with a message naming both values.
+- **Setting a value to `""` is not the same as omitting it.** `suffix = ""`
+  means empty; delete the line to fall back to the theme's default.
+
+### One required step: the icon library
+
+The icon set stays in a data file, `data/icons.toml`, because you will want to
+edit it without touching Tera. Zola does **not** search a theme's `data/`
+directory — `load_data` resolves against your site root only — so point
+`extra.icon_data_path` at the theme's copy:
+
+```toml
+[extra]
+icon_data_path = "themes/zola-silicon/data/icons.toml"
+```
+
+Or copy the file into your own `data/` and leave the default alone:
+
+```sh
+mkdir -p data && cp themes/zola-silicon/data/icons.toml data/
+```
+
+Skip this and the first page fails to render, naming the path it tried. That is
+the only genuinely required step; everything else has a working default.
+
+### Replacing the logo
+
+Set a path and the header and footer render your file instead of the built-in
+mark. Put it in `static/`:
+
+```toml
+[extra.brand]
+logo = "/images/my-logo.svg"
+```
+
+Sized to match the built-in mark (`1.9rem` tall, up to `9rem` wide), so a square
+icon and a wordmark both sit correctly. Leave it empty for the built-in one.
+
+To replace the favicon, social card or manifest colours instead, drop files
+with the same names into your own `static/` — `static/favicon.svg` and
+`static/og.svg` shadow the theme's. Nothing in the theme needs editing.
+
+Note that `favicon.svg` and `og.svg` also carry the brand colours baked into
+their markup, so a new logo usually means re-rasterising the icons too (see
+"Regenerating the raster icons").
+
+### What you get, and what you do not
+
+The theme's `static/` is served and its `templates/` are used. Its
+`content/` is **not** — the Kestrel sample pages never appear in your build, so
+they are safe to leave in place as reference.
+
+The default `[[extra.footer_links]]` point at the sample site's pages
+(`/privacy/`, `/terms/`, `/products/`). Until you override that list those links
+will 404, so replace it early:
+
+```toml
+[[extra.footer_links]]
+heading = "Company"
+links = [{ label = "About", url = "/about/" }]
+```
+
+### Overriding templates instead of data
+
+Two other routes, both supported by Zola:
+
+```jinja
+{#- replace a template outright: same path in your templates/ -#}
+{#- your templates/partials/logo.html replaces the theme's -#}
+
+{#- or override one block and inherit the rest -#}
+{% extends "zola-silicon/templates/index.html" %}
+{% block content %}
+  <section>your landing page</section>
+{% endblock %}
+```
+
+### Keeping theme.toml in step
+
+`theme.toml` is generated from the `[extra]` section of `config.toml`, because
+the two would otherwise drift and the drift is invisible until someone renames
+a key. After editing `config.toml`:
+
+```sh
+python3 scripts/generate-theme-toml.py          # regenerate
+python3 scripts/generate-theme-toml.py --check  # non-zero if stale, for CI
+```
+
 ## The home page is data, not template
 
 `content/_index.md` holds an array of blocks and `templates/index.html` renders
@@ -376,6 +506,9 @@ minify_html = true
 
 ```
 config.toml              all site-level settings, including the section switches
+theme.toml               GENERATED defaults for consuming sites ([extra] only)
+scripts/
+  generate-theme-toml.py regenerates theme.toml; --check fails if stale
 content/
   _index.md              the home page, as data
   products/  services/  blog/
@@ -432,8 +565,14 @@ is why the templates guard every optional field:
   `content/*.md` renders as literal text. Values a template and its content
   share go through `[extra]` in `config.toml`, which is how the contact page
   pulls its email and phone.
-- `templates/sitemap.xml` and `robots.txt` receive only `entries` — they read
-  `config.toml` with `load_data`.
+- `templates/sitemap.xml` and `robots.txt` receive only `entries` — no `config`.
+  The sitemap therefore filters on the switches only when the *site* declares
+  `[extra.sections]`, because `load_data` reads the site's `config.toml` from
+  disk and never sees the `theme.toml` defaults. With no switches declared it
+  emits everything, which is Zola's own behaviour.
+- A theme's `config.toml` is never read; only `theme.toml`'s `[extra]` is. That
+  is why the two are duplicated and why `scripts/generate-theme-toml.py`
+  exists.
 
 ## Licence
 

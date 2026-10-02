@@ -64,6 +64,13 @@ feed_limit = 20
 # after switching one off.
 # -----------------------------------------------------------------------------
 [extra]
+# Where the icon library is loaded from, relative to the site root. See the
+# "Using this template as a Zola theme" section of the README: when your site
+# consumes this repo as a theme, Zola does not search the theme's data/
+# directory, so either copy data/icons.toml into your own data/ or point this
+# at "themes/<your-theme-dir>/data/icons.toml".
+icon_data_path = "data/icons.toml"
+
 # Number of blog posts shown on the home page.
 latest_posts = 3
 
@@ -120,6 +127,14 @@ suffix = "Labs"
 primary = "#137C7A"   # Secure Teal
 accent = "#39C6D6"    # Signal Cyan
 
+# Optional path to your own logo, relative to the site root (put the file in
+# static/). When set, the header and footer render this instead of the built-in
+# mark. Leave empty to keep the built-in one. The mark is drawn on a filled
+# brand-coloured tile, so an SVG with a transparent background works well; a
+# wordmark works too, and you can hide the text beside it by leaving
+# `suffix` empty and overriding the name in your own config.
+logo = ""
+
 # -----------------------------------------------------------------------------
 # Contact details — used by the contact page and the site footer.
 # -----------------------------------------------------------------------------
@@ -175,7 +190,3 @@ url = "https://www.linkedin.com/"
 icon = "rss"
 label = "Atom feed"
 url = "/blog/atom.xml"
-
-# -----------------------------------------------------------------------------
-# Misc
-# -----------------------------------------------------------------------------

@@ -80,9 +80,14 @@
   back to the home page. The header, footer and sitemap read the same flags.
 #}
 {%- set first_segment = cur_path | trim_start_matches(pat="/") | split(pat="/") | first -%}
-{%- set is_gated = first_segment in config.extra.sections -%}
+{#- Resolved to an empty list rather than "" when absent: `in` on a string tests
+    for substrings, so a site with no [extra.sections] would otherwise match
+    every path and gate the whole site. -#}
+{%- set_global SECTIONS = [] -%}
+{%- if "sections" in config.extra -%}{%- set_global SECTIONS = config.extra.sections -%}{%- endif -%}
+{%- set is_gated = first_segment in SECTIONS -%}
 {%- set gate_open = true -%}
-{%- if is_gated -%}{%- set_global gate_open = config.extra.sections[first_segment] -%}{%- endif -%}
+{%- if is_gated -%}{%- set_global gate_open = SECTIONS[first_segment] -%}{%- endif -%}
 
 {% if is_gated and not gate_open -%}
 <!doctype html>

@@ -11,7 +11,8 @@
 #}
 
 {% block content %}
-{%- set_global E = page.extra -%}
+{%- set_global E = "" -%}
+{%- if page.extra is defined and page.extra != "" -%}{%- set_global E = page.extra -%}{%- endif -%}
 
 <section class="page-hero">
   <div class="container">
