@@ -1,0 +1,14 @@
+{%- import "partials/icons.html" as m -%}
+{#
+  A styled link, for use inside Markdown.
+
+      {{< button(text="Get started", url="/contact/", variant="primary", icon="rocket") >}}
+
+  Only `text` and `url` are required; `variant` is primary | secondary | ghost.
+#}
+{%- set_global URL = url -%}
+{%- set_global VARIANT = "primary" -%}
+{%- set_global ICON = "" -%}
+{%- if variant is defined -%}{%- set_global VARIANT = variant -%}{%- endif -%}
+{%- if icon is defined -%}{%- set_global ICON = icon -%}{%- endif -%}
+{{ m::button(text=text, url=URL, variant=VARIANT, icon=ICON) }}

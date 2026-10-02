@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="640" height="480" role="img" aria-label="Diagram of services sending events to a collector, then to storage and alerting">
+  <title>Event pipeline</title>
+  <defs>
+    <linearGradient id="sa-bg" x1="0" y1="0" x2="640" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#232a52"/>
+      <stop offset=".6" stop-color="#2a1f4c"/>
+      <stop offset="1" stop-color="#0f3340"/>
+    </linearGradient>
+    <linearGradient id="sa-flow" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="640" height="480" rx="18" fill="url(#sa-bg)"/>
+  <g stroke="#ffffff" stroke-opacity=".06" stroke-width="1">
+    <path d="M0 80h640M0 160h640M0 240h640M0 320h640M0 400h640"/>
+    <path d="M80 0v480M160 0v480M240 0v480M320 0v480M400 0v480M480 0v480M560 0v480"/>
+  </g>
+
+  <!-- service nodes -->
+  <g>
+    <rect x="44" y="96" width="132" height="52" rx="12" fill="#ffffff" fill-opacity=".07"/>
+    <rect x="44" y="214" width="132" height="52" rx="12" fill="#ffffff" fill-opacity=".07"/>
+    <rect x="44" y="332" width="132" height="52" rx="12" fill="#ffffff" fill-opacity=".07"/>
+    <g fill="#ffffff" fill-opacity=".3">
+      <rect x="60" y="116" width="52" height="7" rx="3.5"/>
+      <rect x="60" y="234" width="64" height="7" rx="3.5"/>
+      <rect x="60" y="352" width="44" height="7" rx="3.5"/>
+    </g>
+    <g fill="#ffffff" fill-opacity=".75">
+      <rect x="60" y="131" width="88" height="6" rx="3"/>
+      <rect x="60" y="249" width="72" height="6" rx="3"/>
+      <rect x="60" y="367" width="96" height="6" rx="3"/>
+    </g>
+  </g>
+
+  <!-- inbound flow -->
+  <g fill="none" stroke="url(#sa-flow)" stroke-width="2.5" stroke-linecap="round">
+    <path d="M176 122h44c18 0 22 14 34 30s14 26 32 26h34"/>
+    <path d="M176 240h144"/>
+    <path d="M176 358h44c18 0 22-14 34-30s14-26 32-26h34"/>
+  </g>
+  <g fill="#22d3ee">
+    <circle cx="212" cy="178" r="3"/>
+    <circle cx="212" cy="302" r="3"/>
+  </g>
+
+  <!-- collector -->
+  <rect x="322" y="158" width="152" height="164" rx="18" fill="#ffffff" fill-opacity=".1"/>
+  <rect x="322" y="158" width="152" height="164" rx="18" fill="none" stroke="#22d3ee" stroke-opacity=".5" stroke-width="1.5"/>
+  <circle cx="398" cy="216" r="26" fill="url(#sa-flow)" fill-opacity=".9"/>
+  <path d="M398 203l-11 15h7.5l-1.4 12 12-16h-7.6l.5-11Z" fill="#141830"/>
+  <rect x="348" y="266" width="100" height="7" rx="3.5" fill="#ffffff" fill-opacity=".45"/>
+  <rect x="364" y="282" width="68" height="6" rx="3" fill="#ffffff" fill-opacity=".2"/>
+
+  <!-- outbound fan-out -->
+  <g fill="none" stroke="#a78bfa" stroke-opacity=".8" stroke-width="2.5" stroke-linecap="round">
+    <path d="M474 210h30c14 0 18-8 18-20v-18h30"/>
+    <path d="M474 240h78"/>
+    <path d="M474 270h30c14 0 18 8 18 20v18h30"/>
+  </g>
+  <g fill="#a78bfa">
+    <circle cx="518" cy="240" r="3.5"/>
+  </g>
+
+  <!-- sink nodes -->
+  <g>
+    <rect x="552" y="156" width="64" height="46" rx="11" fill="#ffffff" fill-opacity=".07"/>
+    <rect x="552" y="217" width="64" height="46" rx="11" fill="#ffffff" fill-opacity=".07"/>
+    <rect x="552" y="292" width="64" height="46" rx="11" fill="#ffffff" fill-opacity=".07"/>
+    <g stroke="#ffffff" stroke-opacity=".45" stroke-width="2" stroke-linecap="round">
+      <path d="M570 179h28M570 240h28M570 315h28"/>
+    </g>
+  </g>
+
+  <rect x="0.75" y="0.75" width="638.5" height="478.5" rx="17.5" fill="none" stroke="#ffffff" stroke-opacity=".14"/>
+</svg>

@@ -1,0 +1,29 @@
+{#-
+  Zola renders this template with only `entries` in scope, so the section
+  switches are read straight out of config.toml with load_data.
+
+  Entries whose first path segment belongs to a section switched off under
+  [extra.sections] are dropped, keeping disabled sections out of search
+  engines as well as out of the navigation.
+-#}
+{%- set_global CFG = load_data(path="config.toml") -%}
+{%- set_global BASE = CFG.base_url | trim_start_matches(pat="/") -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for e in entries -%}
+{%- set_global path = e.permalink | trim_start_matches(pat=BASE) | trim_start_matches(pat="/") -%}
+{%- set_global seg = path | split(pat="/") | first -%}
+{%- set_global keep = true -%}
+{%- if seg in CFG.extra.sections -%}
+{%- set_global keep = CFG.extra.sections[seg] -%}
+{%- endif -%}
+{%- if keep %}
+  <url>
+    <loc>{{ e.permalink | safe }}</loc>
+    {%- if e.updated %}
+    <lastmod>{{ e.updated }}</lastmod>
+    {%- endif %}
+  </url>
+{%- endif -%}
+{%- endfor %}
+</urlset>

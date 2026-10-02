@@ -1,0 +1,65 @@
+{#
+  Section headings and the pager. Reads its fields from a front-matter table
+  so that any of them may be omitted without failing the build.
+
+  This file deliberately has no `{% import %}`: Tera resolves `self::` only
+  for macros invoked at the top level of a render, so every macro here is
+  self-contained and callers reach it by alias.
+#}
+
+{% macro section_head_from(t) %}
+<div class="section-head">
+  {%- if t.eyebrow is defined and t.eyebrow %}<p class="eyebrow">{{ t.eyebrow }}</p>{% endif %}
+  {%- if t.title is defined and t.title %}<h2>{{ t.title }}</h2>{% endif %}
+  {%- if t.text is defined and t.text %}<p class="lead">{{ t.text }}</p>{% endif %}
+</div>
+{% endmacro section_head_from %}
+
+{#- Takes explicit values rather than a table: page/section titles are read
+    from `page` or `section`, which cannot be packed into a table first. -#}
+{% macro page_h(eyebrow="", title="", text="") %}
+<div class="page-hero__inner">
+  {%- if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+  <h1 class="page-hero__title">{{ title }}</h1>
+  {%- if text %}<p class="page-hero__text">{{ text }}</p>{% endif %}
+</div>
+{% endmacro page_h %}
+
+{#- ------------------------------------------------------------------- pager -#}
+{#
+  Watch out: in Zola 0.20 `paginator.total_pages` is the number of *items*, and
+  `number_pagers` is the number of pages. The loop below uses `number_pagers`.
+  `previous`/`next` are full URLs, `current_index` is the current page number,
+  and `base_url` is the prefix for pages 2..n. Pass an empty string when the
+  section has no paginator.
+#}
+{% macro pagination(p) %}
+{%- if p and p.number_pagers > 1 %}
+<nav class="pagination" aria-label="Pagination">
+  {%- if p.previous %}
+  <a href="{{ p.previous | safe }}" rel="prev" aria-label="Previous page">&larr;</a>
+  {%- else %}
+  <span class="is-disabled" aria-hidden="true">&larr;</span>
+  {%- endif %}
+
+  {%- for n in range(end=p.number_pagers) %}
+  {%- set_global num = n + 1 %}
+  {%- if num == p.current_index %}
+  <span aria-current="page">{{ num }}</span>
+  {%- elif num == 1 %}
+  <a href="{{ p.first | safe }}">{{ num }}</a>
+  {%- else %}
+  {#- `base_url` is the path prefix without the page number, so the trailing
+      slash has to be added here or the link 404s on strict servers. -#}
+  <a href="{{ p.base_url | safe }}{{ num }}/">{{ num }}</a>
+  {%- endif %}
+  {%- endfor %}
+
+  {%- if p.next %}
+  <a href="{{ p.next | safe }}" rel="next" aria-label="Next page">&rarr;</a>
+  {%- else %}
+  <span class="is-disabled" aria-hidden="true">&rarr;</span>
+  {%- endif %}
+</nav>
+{%- endif %}
+{% endmacro pagination %}

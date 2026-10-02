@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 134 32" width="134" height="32" role="img" aria-label="Cobalt Bay">
+  <title>Cobalt Bay</title>
+  <g fill="none" stroke="#7b8497" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="7" y="10" width="20" height="14" rx="4.5"/>
+    <path d="M12 17h10M17 13.5v7"/>
+  </g>
+  <text x="40" y="21.5" fill="#7b8497" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="600" letter-spacing="-.2">Cobalt Bay</text>
+</svg>

@@ -1,0 +1,40 @@
+{%- import "partials/icons.html" as m -%}
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="site-logo" href="/">
+          {% include "partials/logo.html" %}
+          <span class="site-logo__name">{{ config.extra.brand.name }}</span>
+          {% if config.extra.brand.suffix %}<span class="site-logo__suffix">{{ config.extra.brand.suffix }}</span>{% endif %}
+        </a>
+        <p class="site-footer__blurb">{{ config.description }}</p>
+        {% if config.extra.social %}
+        <div class="social-row">
+          {%- for s in config.extra.social %}
+          {{ m::icon_link(name=s.icon, url=s.url, label=s.label) }}
+          {%- endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="footer-links">
+        {%- for col in config.extra.footer_links %}
+        <div>
+          <h2 class="footer-links__heading">{{ col.heading }}</h2>
+          <ul class="footer-links__list">
+            {%- for l in col.links %}
+            <li><a href="{{ l.url | safe }}">{{ l.label }}</a></li>
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endfor %}
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>&copy; {{ config.extra.copyright_year }} {{ config.extra.brand.name }}{% if config.extra.brand.suffix %} {{ config.extra.brand.suffix }}{% endif %}</p>
+      <p>Built with <a href="https://www.getzola.org/" rel="noopener">Zola</a></p>
+    </div>
+  </div>
+</footer>

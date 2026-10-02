@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+{% import "partials/ui.html" as ui %}
+
+{#
+  Blog index with pagination. Set `paginate_by` in the front matter of
+  content/blog/_index.md to control the page size (0 disables pagination).
+#}
+
+{% block content %}
+{%- set_global E = section.extra -%}
+{%- set_global PAG = "" -%}
+{%- if paginator is defined -%}{%- set_global PAG = paginator -%}{%- endif -%}
+
+<section class="page-hero">
+  <div class="container">
+    {%- set_global eyebrow = "" -%}
+    {%- if E.eyebrow is defined -%}{%- set_global eyebrow = E.eyebrow -%}{%- endif %}
+    {%- if PAG and PAG.current_page %}
+    {%- if PAG.current_page > 1 %}<p class="eyebrow">Page {{ PAG.current_page }}</p>{% endif %}
+    {%- endif %}
+    {{ ui::page_h(eyebrow=eyebrow, title=section.title, text=section.description) }}
+
+    {%- if config.generate_feeds and section.generate_feeds %}
+    <p>{{ m::link_arrow(text="Subscribe via Atom", url=section.permalink ~ "atom.xml") }}</p>
+    {%- endif %}
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    {%- if PAG %}
+    {%- set_global POSTS = PAG.pages %}
+    {%- else %}
+    {%- set_global POSTS = section.pages %}
+    {%- endif %}
+
+    {%- set_global SORTED = POSTS | sort(attribute="date") | reverse %}
+
+    {%- if SORTED | length > 0 %}
+    <div class="post-list">
+      {%- for p in SORTED %}{{ ui::post_card(p=p) }}{% endfor %}
+    </div>
+    {{ ui::pagination(p=PAG) }}
+    {%- else %}
+    <p class="muted">No posts yet — add a Markdown file to <code>content/blog/</code>.</p>
+    {%- endif %}
+  </div>
+</section>
+
+{%- if E.newsletter is defined %}{{ ui::newsletter(n=E.newsletter) }}{% endif %}
+{% endblock %}

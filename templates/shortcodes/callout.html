@@ -1,0 +1,39 @@
+{#-
+  Highlighted note.
+
+      {% callout(type="tip") %}
+      Body text goes here.
+      {% end %}
+
+  Zola shortcode syntax, which is easy to get wrong:
+    * A shortcode with a body opens with `{% name(args) %}` and closes with
+      `{% end %}`. Angle brackets (`{{< >}}`) are *not* used for these.
+    * Parentheses are mandatory, even with no arguments.
+    * Arguments are named and quoted: `type="tip"`, never `type=tip`.
+    * Argument names may contain letters, digits and underscores only.
+    * The body arrives as `body`, not as `caller()`.
+    * The body is emitted verbatim, so write plain text or inline HTML
+      (`<strong>`, `<em>`, `<code>`, `<a>`) — Markdown is not rendered
+      inside it.
+    * Avoid backticks and percent signs in the body: Zola's shortcode grammar
+      uses backticks for quoted argument values, and stray ones leak into the
+      output.
+  To display something that looks like a shortcode without rendering it,
+  wrap it in `{{/* ... */}}`.
+#}
+{%- set_global KIND = "tip" -%}
+{%- set_global LABEL = "Tip" -%}
+{%- if type is defined -%}
+{%- set_global KIND = type -%}
+{%- set_global LABEL = "Note" -%}
+{%- if KIND == "tip" -%}{%- set_global LABEL = "Tip" -%}
+{%- elif KIND == "info" -%}{%- set_global LABEL = "Good to know" -%}
+{%- elif KIND == "warning" -%}{%- set_global LABEL = "Watch out" -%}
+{%- endif -%}
+{%- endif -%}
+<div class="callout callout--{{ KIND }}">
+  <p class="callout__label">{{ LABEL }}</p>
+  <div class="callout__body">
+{{ body | safe }}
+  </div>
+</div>

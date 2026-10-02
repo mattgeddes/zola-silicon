@@ -1,0 +1,13 @@
+{%- import "partials/icons.html" as m -%}
+{#
+  Inlines one of the icons in data/icons.toml.
+
+      {{< icon(name="bolt") >}}
+      {{< icon(name="rocket", size=32) >}}
+
+  Names are the table names in data/icons.toml. Arguments must be named and
+  quoted; Zola shortcodes take no positional arguments.
+#}
+{%- set_global SIZE = 24 -%}
+{%- if size is defined -%}{%- set_global SIZE = size -%}{%- endif -%}
+{{ m::icon(name=name, size=SIZE) }}

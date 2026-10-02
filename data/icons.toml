@@ -1,0 +1,195 @@
+# Icon library for the zola-biz template.
+#
+# Each key is an icon name; the value is the inner markup of a 24x24
+# stroked <svg> that inherits `currentColor` from its surroundings.
+# Use them from templates with {{ m::icon(name="bolt") }} and from
+# Markdown with {{</* icon bolt */>}}. Add your own by copying any entry.
+# Icons are hand-drawn for this template and released CC0 (see
+# LICENSE-ARTWORK.md). Replace with official brand marks for socials.
+
+[activity]
+svg = """<path d='M2.4 12h4l2.6-7.2 5.4 14.4 2.4-7.2h5'/>"""
+
+[alert]
+svg = """<path d='M12 3.4 21.6 20.2H2.4L12 3.4Z'/><path d='M12 10v4.2'/><path d='M12 17.4h.02'/>"""
+
+[arrow-right]
+svg = """<path d='M5 12h14'/><path d='m13 6 6 6-6 6'/>"""
+
+[arrow-up-right]
+svg = """<path d='M7 17 17 7'/><path d='M8 7h9v9'/>"""
+
+[award]
+svg = """<circle cx='12' cy='9' r='5.5'/><path d='m8.6 13.6-1.4 7 4.8-2.6 4.8 2.6-1.4-7'/>"""
+
+[bolt]
+svg = """<path d='M13.2 2.2 5 13.6h5.6L10.8 21.8 19 10.4h-5.6l-.2-8.2Z'/>"""
+
+[book]
+svg = """<path d='M4 4.8A1.8 1.8 0 0 1 5.8 3H11v18H5.8A1.8 1.8 0 0 1 4 19.2V4.8Z'/><path d='M20 4.8A1.8 1.8 0 0 0 18.2 3H13v18h5.2A1.8 1.8 0 0 0 20 19.2V4.8Z'/>"""
+
+[briefcase]
+svg = """<rect x='3' y='7.2' width='18' height='12.6' rx='2.2'/><path d='M9 7.2V5.8A1.8 1.8 0 0 1 10.8 4h2.4A1.8 1.8 0 0 1 15 5.8v1.4'/><path d='M3 12.6h18'/>"""
+
+[calendar]
+svg = """<rect x='3.5' y='5' width='17' height='16' rx='2.2'/><path d='M3.5 10h17M8 3v4M16 3v4'/>"""
+
+[chart]
+svg = """<path d='M3.5 3.2v17.6h17'/><path d='M8 16.4v-3.8M12.4 16.4V8.6M16.8 16.4v-6'/>"""
+
+[check]
+svg = """<path d='m4.8 12.6 4.8 4.8L19.5 6.6'/>"""
+
+[check-circle]
+svg = """<circle cx='12' cy='12' r='9'/><path d='m8.4 12.3 2.8 2.8 4.8-5.4'/>"""
+
+[chevron-down]
+svg = """<path d='m6 9 6 6 6-6'/>"""
+
+[chevron-right]
+svg = """<path d='m9 6 6 6-6 6'/>"""
+
+[clock]
+svg = """<circle cx='12' cy='12' r='9'/><path d='M12 6.8V12l3.6 2.2'/>"""
+
+[close]
+svg = """<path d='m6 6 12 12M18 6 6 18'/>"""
+
+[cloud]
+svg = """<path d='M7.2 18.6a4.3 4.3 0 0 1-.4-8.6 6 6 0 0 1 11.4 1 3.8 3.8 0 0 1-.7 7.6H7.2Z'/>"""
+
+[code]
+svg = """<path d='m9 17.6-5.6-5.6L9 6.4'/><path d='m15 6.4 5.6 5.6L15 17.6'/>"""
+
+[compass]
+svg = """<circle cx='12' cy='12' r='9'/><path d='m15.4 8.6-2.1 4.7-4.7 2.1 2.1-4.7 4.7-2.1Z'/>"""
+
+[cpu]
+svg = """<rect x='6.6' y='6.6' width='10.8' height='10.8' rx='2'/><rect x='10' y='10' width='4' height='4' rx='0.8'/><path d='M9.6 3v3.6M14.4 3v3.6M9.6 17.4V21M14.4 17.4V21M3 9.6h3.6M3 14.4h3.6M17.4 9.6H21M17.4 14.4H21'/>"""
+
+[database]
+svg = """<ellipse cx='12' cy='6' rx='7.5' ry='3'/><path d='M4.5 6v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6'/><path d='M4.5 12v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6'/>"""
+
+[external]
+svg = """<path d='M14 4h6v6'/><path d='M20 4l-9 9'/><path d='M18.2 13.6V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7.8a2 2 0 0 1 2-2h5.4'/>"""
+
+[file-text]
+svg = """<path d='M13.8 3H7.2A2.2 2.2 0 0 0 5 5.2v13.6A2.2 2.2 0 0 0 7.2 21h9.6a2.2 2.2 0 0 0 2.2-2.2V8.2L13.8 3Z'/><path d='M13.6 3.2v5.2h4.9'/><path d='M8.8 13h6.4M8.8 16.4h6.4M8.8 9.6h2.4'/>"""
+
+[gauge]
+svg = """<path d='M3.6 18.6a9 9 0 1 1 16.8 0'/><path d='m12 14.2 3.9-4.6'/><path d='M12 6.4v1.5M6.4 9.1l1.3.8M17.6 9.1l-1.3.8M12 18.6h.02'/>"""
+
+[git-branch]
+svg = """<circle cx='6.5' cy='5.5' r='2.5'/><circle cx='6.5' cy='18.5' r='2.5'/><circle cx='17.5' cy='8.5' r='2.5'/><path d='M6.5 8v8'/><path d='M17.5 11c0 4-3.4 5.5-6.5 5.9'/>"""
+
+[globe]
+svg = """<circle cx='12' cy='12' r='9'/><path d='M3.2 12h17.6'/><path d='M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z'/>"""
+
+[heart]
+svg = """<path d='M12 20.2C7.4 17 4 14.1 4 10.6A4.6 4.6 0 0 1 12 8a4.6 4.6 0 0 1 8 2.6c0 3.5-3.4 6.4-8 9.6Z'/>"""
+
+[help-circle]
+svg = """<circle cx='12' cy='12' r='9'/><path d='M9.5 9.6a2.6 2.6 0 1 1 3.5 2.4c-.7.3-1 1-1 1.7v.2'/><path d='M12 17.2h.02'/>"""
+
+[inbox]
+svg = """<path d='M3.5 13.4h4.2l1.4 2.8h5.8l1.4-2.8h4.2'/><path d='M6.4 4.4h11.2l2.9 9v4.4a2 2 0 0 1-2 2H5.5a2 2 0 0 1-2-2v-4.4l2.9-9Z'/>"""
+
+[info]
+svg = """<circle cx='12' cy='12' r='9'/><path d='M12 11.2v5.6'/><path d='M12 7.6h.02'/>"""
+
+[key]
+svg = """<circle cx='7.6' cy='14.4' r='4.4'/><path d='M10.8 11.2 20.4 1.6M17.6 4.4l2.6 2.6M14.8 7.2l2.6 2.6'/>"""
+
+[layers]
+svg = """<path d='m12 3 8.5 4.7L12 12.4 3.5 7.7 12 3Z'/><path d='m3.5 12 8.5 4.7 8.5-4.7'/><path d='m3.5 16.3 8.5 4.7 8.5-4.7'/>"""
+
+[link]
+svg = """<path d='M10.6 13.4a4.2 4.2 0 0 0 6 0l2.2-2.2a4.2 4.2 0 1 0-6-6l-1.3 1.3'/><path d='M13.4 10.6a4.2 4.2 0 0 0-6 0l-2.2 2.2a4.2 4.2 0 1 0 6 6l1.3-1.3'/>"""
+
+[lock]
+svg = """<rect x='4.6' y='10.4' width='14.8' height='10.2' rx='2.2'/><path d='M8.2 10.4V8a3.8 3.8 0 0 1 7.6 0v2.4'/><path d='M12 14.6v2.4'/>"""
+
+[mail]
+svg = """<rect x='3' y='5' width='18' height='14' rx='2.2'/><path d='m3.7 7 7.2 5.2a2 2 0 0 0 2.2 0L20.3 7'/>"""
+
+[map-pin]
+svg = """<path d='M12 21.2c4.2-4.1 6.4-7.4 6.4-10.4a6.4 6.4 0 1 0-12.8 0c0 3 2.2 6.3 6.4 10.4Z'/><circle cx='12' cy='10.6' r='2.5'/>"""
+
+[menu]
+svg = """<path d='M4 7h16M4 12h16M4 17h16'/>"""
+
+[message]
+svg = """<path d='M20.5 15a3 3 0 0 1-3 3H9.4L4.5 21V7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v8Z'/>"""
+
+[moon]
+svg = """<path d='M20.5 14.3A8.5 8.5 0 0 1 9.7 3.5a8.5 8.5 0 1 0 10.8 10.8Z'/>"""
+
+[network]
+svg = """<circle cx='12' cy='12' r='2.6'/><circle cx='12' cy='3.6' r='1.9'/><circle cx='4' cy='19' r='1.9'/><circle cx='20' cy='19' r='1.9'/><circle cx='4' cy='5' r='1.9'/><circle cx='20' cy='5' r='1.9'/><path d='M12 5.5v3.9M12 14.6v2.4M5.2 17.6l5.3-3.1M13.5 14.5l5.3 3.1M5.2 6.4l5.3 3.1M13.5 9.5l5.3-3.1'/>"""
+
+[phone]
+svg = """<path d='M6.4 3.5h2.8l1.4 3.8-2 1.4a12.4 12.4 0 0 0 5.7 5.7l1.4-2 3.8 1.4v2.8a2 2 0 0 1-2.2 2A16.9 16.9 0 0 1 4.4 5.7a2 2 0 0 1 2-2.2Z'/>"""
+
+[play]
+svg = """<circle cx='12' cy='12' r='9'/><path d='m10 8.6 5.4 3.4L10 15.4V8.6Z'/>"""
+
+[plus]
+svg = """<path d='M12 5.2v13.6M5.2 12h13.6'/>"""
+
+[quote]
+svg = """<path fill='currentColor' stroke='none' d='M10.4 6.6c-3.3 1.2-5.1 3.7-5.1 6.9v3.9h4.9v-4.8H7.8c0-1.5.7-2.6 2.6-3.2V6.6Zm8.6 0c-3.3 1.2-5.1 3.7-5.1 6.9v3.9h4.9v-4.8h-2.4c0-1.5.7-2.6 2.6-3.2V6.6Z'/>"""
+
+[refresh]
+svg = """<path d='M20.2 12a8.2 8.2 0 0 1-14 5.8M3.8 12a8.2 8.2 0 0 1 14-5.8'/><path d='M17.8 2.6v3.6h-3.6M6.2 21.4v-3.6h3.6'/>"""
+
+[rocket]
+svg = """<path d='M12 2.8c2.8 2.3 4.2 5.5 4.2 8.7v3.7H7.8v-3.7c0-3.2 1.4-6.4 4.2-8.7Z'/><circle cx='12' cy='9.6' r='1.8'/><path d='M7.8 15.2 5 19.6M16.2 15.2 19 19.6M12 18.6v2.9'/>"""
+
+[rss]
+svg = """<circle cx='6.2' cy='18.6' r='1.6'/><path d='M5 11.2A7.8 7.8 0 0 1 12.8 19'/><path d='M5 4.2A14.8 14.8 0 0 1 19.8 19'/>"""
+
+[search]
+svg = """<circle cx='11' cy='11' r='7'/><path d='m16.2 16.2 4.3 4.3'/>"""
+
+[send]
+svg = """<path d='M21.5 3.2 2.9 10.4a.6.6 0 0 0 0 1.1l7.4 2.7 2.7 7.4a.6.6 0 0 0 1.1 0L21.5 3.2Z'/><path d='m10.3 14.2 4.6-4.6'/>"""
+
+[shield]
+svg = """<path d='M12 2.8 19.5 5.6V11c0 4.6-3.1 8.1-7.5 9.3C7.6 19.1 4.5 15.6 4.5 11V5.6L12 2.8Z'/>"""
+
+[shield-check]
+svg = """<path d='M12 2.8 19.5 5.6V11c0 4.6-3.1 8.1-7.5 9.3C7.6 19.1 4.5 15.6 4.5 11V5.6L12 2.8Z'/><path d='m8.9 11.7 2.4 2.4 3.9-4.5'/>"""
+
+[shopping-bag]
+svg = """<path d='M4.4 7.6h15.2l-1 12.2a1.6 1.6 0 0 1-1.6 1.5H7a1.6 1.6 0 0 1-1.6-1.5l-1-12.2Z'/><path d='M8.6 10V6.6a3.4 3.4 0 0 1 6.8 0V10'/>"""
+
+[sliders]
+svg = """<path d='M4 9h9.5M18.5 9H20M4 15.5h3.5M12.5 15.5H20'/><circle cx='15.8' cy='9' r='2.2'/><circle cx='9.8' cy='15.5' r='2.2'/>"""
+
+[sparkles]
+svg = """<path d='m12 3 1.7 4.6 4.6 1.7-4.6 1.7L12 15.6l-1.7-4.6L5.7 9.3l4.6-1.7L12 3Z'/><path d='m18.6 15.2.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9.9-2.3Z'/>"""
+
+[star]
+svg = """<path d='m12 3 2.85 5.77 6.37.93-4.61 4.49 1.09 6.34L12 17.6l-5.7 2.99 1.09-6.34L2.78 9.7l6.37-.93L12 3Z'/>"""
+
+[sun]
+svg = """<circle cx='12' cy='12' r='4'/><path d='M12 2.2v2.2M12 19.6v2.2M4.5 4.5l1.6 1.6M17.9 17.9l1.6 1.6M2.2 12h2.2M19.6 12h2.2M4.5 19.5l1.6-1.6M17.9 6.1l1.6-1.6'/>"""
+
+[tag]
+svg = """<path d='M3.5 12.4V4.9a1.4 1.4 0 0 1 1.4-1.4h7.5l8.2 8.2a1.4 1.4 0 0 1 0 2l-7.5 7.5a1.4 1.4 0 0 1-2 0L3.5 12.4Z'/><circle cx='7.8' cy='7.8' r='1.3'/>"""
+
+[target]
+svg = """<circle cx='12' cy='12' r='9'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='1.4'/>"""
+
+[terminal]
+svg = """<rect x='3' y='4.6' width='18' height='14.8' rx='2.2'/><path d='m7.2 10.2 2.8 2.6-2.8 2.6'/><path d='M12.6 15.6h4.4'/>"""
+
+[users]
+svg = """<circle cx='9.2' cy='8' r='3.6'/><path d='M2.8 20v-1.2a4.6 4.6 0 0 1 4.4-4.6h4a4.6 4.6 0 0 1 4.6 4.6V20'/><path d='M16.4 4.7a3.6 3.6 0 0 1 0 6.6'/><path d='M17.6 14.4a4.6 4.6 0 0 1 3.6 4.4V20'/>"""
+
+[wand]
+svg = """<path d='m14.4 3.6 6 6'/><path d='M13.2 5.2 3.4 15a2.1 2.1 0 0 0 3 3l9.8-9.8'/><path d='m20.6 12.8.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9.9-2.4Z'/>"""
+
+[workflow]
+svg = """<rect x='3' y='3.4' width='7' height='6' rx='1.6'/><rect x='14' y='14.6' width='7' height='6' rx='1.6'/><path d='M6.5 9.4v5.1a2.5 2.5 0 0 0 2.5 2.5h5'/>"""
+

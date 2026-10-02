@@ -1,0 +1,179 @@
+{#
+  Reusable building blocks.
+
+  Optional front-matter fields are read through `is defined` guards: Zola
+  raises a build error when a template touches a field that does not exist, so
+  anything a content author may reasonably omit has to be checked before use.
+#}
+{% import "partials/icons.html" as m %}
+{% import "partials/actions.html" as act %}
+{% import "partials/heads.html" as h %}
+
+{#- Re-exported from heads.html so callers only ever import this one module. -#}
+{% macro section_head_from(t) %}{{ h::section_head_from(t=t) }}{% endmacro section_head_from %}
+{% macro page_h(eyebrow="", title="", text="", centered=false) %}{{ h::page_h(eyebrow=eyebrow, title=title, text=text, centered=centered) }}{% endmacro page_h %}
+{% macro pagination(p) %}{{ h::pagination(p=p) }}{% endmacro pagination %}
+
+{#- --------------------------------------------------------------- feature -#}
+{% macro feature_card(f) %}
+{%- set_global ico = "sparkles" -%}
+{%- if f.icon is defined and f.icon != "" -%}{%- set_global ico = f.icon -%}{%- endif -%}
+<div class="card">
+  <span class="card__icon">{{ m::icon(name=ico, size=24) }}</span>
+  <h3 class="card__title">{{ f.title }}</h3>
+  <p class="card__text">{{ f.text }}</p>
+  {%- if f.link is defined %}
+  <div class="card__foot">
+    {%- if f.link_text is defined and f.link_text != "" -%}
+    {{ m::link_arrow(text=f.link_text, url=f.link) }}
+    {%- else -%}
+    {{ m::link_arrow(text="Learn more", url=f.link) }}
+    {%- endif -%}
+  </div>
+  {%- endif %}
+</div>
+{% endmacro feature_card %}
+
+{#- ----------------------------------------------------------------- entry -#}
+{#
+  One row in a section listing (products, services). Custom fields live under
+  the page's [extra] table and may add `icon`, `price`, `facts`, `cta_label`,
+  `secondary_url` and `secondary_label`. `cta` is reserved for the closing band
+  rendered from [extra.cta].
+#}
+{% macro entry(e) %}
+{%- set_global X = e.extra -%}
+{%- set_global ico = "sparkles" -%}
+{%- if X.icon is defined and X.icon != "" -%}{%- set_global ico = X.icon -%}{%- endif -%}
+<article class="entry">
+  <span class="entry__icon">{{ m::icon(name=ico, size=28) }}</span>
+  <div class="entry__body">
+    <div class="entry__head">
+      <h2 class="entry__title"><a href="{{ e.permalink | safe }}">{{ e.title }}</a></h2>
+      {%- if X.price is defined and X.price != "" %}
+      {{ m::badge(text=X.price, variant="primary") }}
+      {%- endif %}
+    </div>
+    {%- if e.description is defined and e.description != "" %}
+    <p class="entry__text">{{ e.description }}</p>
+    {%- endif %}
+    {%- if X.facts is defined %}
+    <div class="entry__facts">
+      {%- for f in X.facts %}{{ m::badge(text=f) }}{% endfor %}
+    </div>
+    {%- endif %}
+    <div class="entry__actions">
+      {%- if X.cta_label is defined and X.cta_label != "" -%}
+      {{ m::button(text=X.cta_label, url=e.permalink, variant="secondary", icon="arrow-right") }}
+      {%- else -%}
+      {{ m::button(text="Read more", url=e.permalink, variant="secondary", icon="arrow-right") }}
+      {%- endif -%}
+      {%- if X.secondary_url is defined %}
+      {{ m::button(text=X.secondary_label, url=X.secondary_url, variant="ghost") }}
+      {%- endif %}
+    </div>
+  </div>
+</article>
+{% endmacro entry %}
+
+{#- ------------------------------------------------------------- post card -#}
+{#
+  The whole card is clickable, but only the title is a real link: an <a>
+  cannot contain another <a>, so the title's link is stretched over the card
+  with ::after. That keeps one tab stop, one accessible name and one URL.
+#}
+{% macro post_card(p, show_image=true) %}
+{%- set_global X = p.extra -%}
+{%- set_global ico = "file-text" -%}
+{%- if X.icon is defined and X.icon != "" -%}{%- set_global ico = X.icon -%}{%- endif -%}
+{%- set_global date_label = "" -%}
+{%- if p.date -%}{%- set_global date_label = p.date | date(format="%d %b %Y") -%}{%- endif -%}
+<article class="post-card">
+  <span class="post-card__body">
+    <span class="post-card__meta">
+      {%- if date_label != "" %}
+      <span class="post-card__meta-item">{{ m::icon(name="calendar", size=15) }}<time datetime="{{ p.date }}">{{ date_label }}</time></span>
+      {%- endif %}
+      {%- if p.reading_time and p.reading_time > 0 %}
+      <span class="post-card__meta-item">{{ m::icon(name="clock", size=15) }}{{ p.reading_time }} min read</span>
+      {%- endif %}
+      {%- if X.tag is defined and X.tag != "" %}
+      <span class="post-card__meta-item">{{ m::icon(name=ico, size=15) }}{{ X.tag }}</span>
+      {%- endif %}
+    </span>
+    <h3 class="post-card__title"><a href="{{ p.permalink | safe }}">{{ p.title }}</a></h3>
+    {%- if p.description is defined and p.description != "" %}
+    <span class="post-card__excerpt">{{ p.description }}</span>
+    {%- endif %}
+    <span class="post-card__foot">Read article{{ m::icon(name="arrow-right", size=16) }}</span>
+  </span>
+  {%- if show_image and X.image is defined and X.image != "" %}
+  <span class="post-card__thumb">
+    <img src="{{ X.image }}" alt="" width="416" height="260" loading="lazy" decoding="async">
+  </span>
+  {%- endif %}
+</article>
+{% endmacro post_card %}
+
+{#- ------------------------------------------------------------------- faq -#}
+{% macro faq(f) %}
+<section class="section" id="faq">
+  <div class="container">
+    {{ h::section_head_from(t=f) }}
+    <div class="faq">
+      {%- for q in f.items %}
+      <details class="faq__item"{% if loop.first %} open{% endif %}>
+        <summary>{{ q.q }}</summary>
+        <div class="faq__answer">{{ q.a | safe }}</div>
+      </details>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{% endmacro faq %}
+
+{#- ------------------------------------------------------------ newsletter -#}
+{% macro newsletter(n) %}
+<section class="section">
+  <div class="container">
+    <div class="newsletter">
+      <div class="newsletter__inner">
+        {%- if n.eyebrow is defined and n.eyebrow != "" %}<p class="eyebrow">{{ n.eyebrow }}</p>{% endif %}
+        {%- if n.title is defined and n.title != "" %}<h2 class="newsletter__title">{{ n.title }}</h2>{% endif %}
+        {%- if n.text is defined and n.text != "" %}<p class="lead">{{ n.text }}</p>{% endif %}
+        <form class="newsletter__form" data-newsletter novalidate>
+          <div class="field">
+            <label class="visually-hidden" for="newsletter-email">Email address</label>
+            <input class="input" id="newsletter-email" type="email" name="email" placeholder="you@company.com" autocomplete="email" required>
+          </div>
+          <button class="btn btn--primary" type="submit">Subscribe</button>
+        </form>
+        <p class="newsletter__note" data-newsletter-note>
+          {%- if n.note is defined and n.note != "" %}{{ n.note }}{% else %}No spam. Unsubscribe any time.{% endif -%}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endmacro newsletter %}
+
+{#- ------------------------------------------------------------------- cta -#}
+{% macro cta_band(c) %}
+<section class="section section--tight">
+  <div class="container">
+    <div class="cta-band">
+      <div class="cta-band__inner">
+        <div>
+          <h2>{{ c.title }}</h2>
+          {%- if c.text is defined and c.text != "" %}<p class="lead">{{ c.text }}</p>{% endif %}
+        </div>
+        {%- if c.actions is defined %}
+        <div class="btn-row">
+          {%- for a in c.actions %}{{ act::action(a=a) }}{% endfor %}
+        </div>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endmacro cta_band %}

@@ -1,0 +1,28 @@
+{#
+  The one place an <svg> is built. Kept import-free so that every other module
+  can reach it through an explicit alias rather than `self::`, which Tera only
+  resolves reliably when the macro is invoked directly.
+#}
+
+{% macro icon(name, cls="icon", size=24, label="") %}
+{%- set_global ICONS = load_data(path="data/icons.toml") -%}
+{%- set_global body = "" -%}
+{%- if name in ICONS -%}
+{%- set_global body = ICONS[name].svg -%}
+{%- elif "help-circle" in ICONS -%}
+{#- Unknown name: draw the help glyph rather than an empty box. -#}
+{%- set_global body = ICONS["help-circle"].svg -%}
+{%- endif -%}
+{%- if label -%}
+<svg class="{{ cls }}" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="{{ label }}">{{ body | safe }}</svg>
+{%- else -%}
+<svg class="{{ cls }}" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">{{ body | safe }}</svg>
+{%- endif -%}
+{% endmacro icon %}
+
+{#- Emits rel/target for off-site links and nothing for on-site ones, so every
+    anchor can just include it. -#}
+{% macro external_attrs(url) %}
+{%- set_global stripped = url | trim_start_matches(pat="https://") | trim_start_matches(pat="http://") | trim_start_matches(pat="//") -%}
+{%- if stripped != url %} rel="noopener" target="_blank"{% endif -%}
+{% endmacro external_attrs %}

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+{% import "partials/ui.html" as ui %}
+{% import "partials/actions.html" as act %}
+
+{#
+  Every block on this page is data from the front matter of content/_index.md:
+  hero, logos, features, steps, split, FAQ, newsletter and the closing band.
+  You should be able to redesign this site by editing Markdown, not Tera.
+#}
+
+{% block content %}
+{%- set_global H = section.extra.hero -%}
+{%- set_global FEATURES = section.extra.features -%}
+{%- set_global STEPS = section.extra.steps -%}
+{%- set_global SPLIT = section.extra.split -%}
+{%- set_global LOGOS = section.extra.logos -%}
+{%- set_global FAQ = section.extra.faq -%}
+{%- set_global NEWSLETTER = section.extra.newsletter -%}
+{%- set_global CTA = section.extra.cta -%}
+
+{#- ============================== Hero ============================== -#}
+{% if H %}
+<section class="hero">
+  <div class="container hero__inner">
+    <div class="hero__content">
+      {% if H.eyebrow is defined %}<p class="eyebrow">{{ H.eyebrow }}</p>{% endif %}
+      {% if H.title is defined %}<h1 class="hero__title">{{ H.title | safe }}</h1>{% endif %}
+      {% if H.text is defined %}<p class="hero__text">{{ H.text }}</p>{% endif %}
+
+      {% if H.actions is defined %}
+      <div class="btn-row">
+        {%- for a in H.actions %}{{ act::action(a=a) }}{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if H.meta is defined %}
+      <ul class="hero__meta">
+        {%- for item in H.meta %}
+        <li class="hero__meta-item">
+          {{ m::icon(name=item.icon, size=18) }} {{ item.text }}
+        </li>
+        {%- endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    {% if H.image is defined %}
+    {%- set_global hero_alt = "" -%}
+    {%- if H.image_alt is defined -%}{%- set_global hero_alt = H.image_alt -%}{%- endif %}
+    <div class="hero__media">
+      <img src="{{ H.image }}" alt="{{ hero_alt }}" width="720" height="540" decoding="async">
+      {% if H.stat is defined %}
+      <div class="hero__stat">
+        <span class="hero__stat-icon">{{ m::icon(name=H.stat.icon, size=20) }}</span>
+        <span>
+          <span class="hero__stat-title">{{ H.stat.title }}</span><br>
+          <span class="hero__stat-sub">{{ H.stat.text }}</span>
+        </span>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{#- ============================ Logos ============================== -#}
+{% if LOGOS %}
+<section class="section section--tight">
+  <div class="container logos">
+    <p class="logos__label">{{ LOGOS.label }}</p>
+    <div class="logos__row">
+      {%- for l in LOGOS.items %}
+      <img class="logos__item" src="{{ l.logo }}" alt="{{ l.name }}" height="26" loading="lazy" decoding="async">
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{#- =========================== Features ============================ -#}
+{% if FEATURES %}
+<section class="section" id="features">
+  <div class="container">
+    {{ ui::section_head_from(t=FEATURES) }}
+    <div class="grid grid--3">
+      {%- for f in FEATURES.items %}{{ ui::feature_card(f=f) }}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{#- ============================= Steps ============================== -#}
+{% if STEPS %}
+<section class="section section--subtle">
+  <div class="container">
+    {{ ui::section_head_from(t=STEPS) }}
+    <div class="grid grid--3 steps">
+      {%- for st in STEPS.items %}
+      <div class="step">
+        <h3 class="step__title">{{ st.title }}</h3>
+        <p class="step__text">{{ st.text }}</p>
+      </div>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{#- ============================= Split ============================== -#}
+{% if SPLIT %}
+<section class="section">
+  <div class="container split{% if SPLIT.flip %} split--flip{% endif %}">
+    <div class="split__content">
+      {% if SPLIT.eyebrow is defined %}<p class="eyebrow">{{ SPLIT.eyebrow }}</p>{% endif %}
+      {% if SPLIT.title is defined %}<h2>{{ SPLIT.title }}</h2>{% endif %}
+      {% if SPLIT.text is defined %}<p class="lead">{{ SPLIT.text }}</p>{% endif %}
+      {% if SPLIT.items is defined %}
+      <ul class="checklist">
+        {%- for i in SPLIT.items %}
+        <li>{{ m::icon(name="check-circle", size=18) }}<span>{{ i.text }}</span></li>
+        {%- endfor %}
+      </ul>
+      {% endif %}
+      {% if SPLIT.actions is defined %}
+      <div class="btn-row">
+        {%- for a in SPLIT.actions %}{{ act::action(a=a) }}{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% if SPLIT.image is defined %}
+    {%- set_global split_alt = "" -%}
+    {%- if SPLIT.image_alt is defined -%}{%- set_global split_alt = SPLIT.image_alt -%}{%- endif %}
+    <div class="split__media">
+      <img src="{{ SPLIT.image }}" alt="{{ split_alt }}" width="640" height="480" loading="lazy" decoding="async">
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{#- ========================= Latest posts ===========================
+    Resolves the blog section from the home section's `subsections` list.
+    Zola exposes those as relative file paths ("blog/_index.md"); the
+    normalise step accepts either that or a bare slug. -#}
+{% if "blog" in config.extra.sections and config.extra.sections.blog %}
+{%- set_global BLOG = "" -%}
+{%- for s in section.subsections -%}
+{%- set_global stem = s | trim_start_matches(pat="/") | replace(from="/_index.md", to="") | trim(pat="/") -%}
+{%- if stem == "blog" -%}{%- set_global BLOG = get_section(path=s) -%}{%- endif -%}
+{%- endfor %}
+{% if BLOG %}
+{%- set_global POSTS = BLOG.pages | sort(attribute="date") | reverse | slice(end=config.extra.latest_posts) %}
+{% if POSTS | length > 0 %}
+{%- set_global LATEST = section.extra.latest %}
+<section class="section section--subtle">
+  <div class="container">
+    {{ ui::section_head_from(t=LATEST) }}
+    <div class="post-list">
+      {%- for p in POSTS %}{{ ui::post_card(p=p) }}{% endfor %}
+    </div>
+    <div class="btn-row btn-row--center latest-more">
+      {{ m::button(text="All posts", url="/blog/", variant="secondary", icon="arrow-right") }}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endif %}
+{% endif %}
+
+{#- ============================== FAQ ============================== -#}
+{% if FAQ %}{{ ui::faq(f=FAQ) }}{% endif %}
+
+{#- ========================== Newsletter ============================ -#}
+{% if NEWSLETTER %}{{ ui::newsletter(n=NEWSLETTER) }}{% endif %}
+
+{#- ========================== Closing CTA =========================== -#}
+{% if CTA %}{{ ui::cta_band(c=CTA) }}{% endif %}
+{% endblock %}

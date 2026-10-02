@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="A generated status panel transitioning from degraded to operational">
+  <title>Status page</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1d2450"/>
+      <stop offset=".55" stop-color="#2c1f4b"/>
+      <stop offset="1" stop-color="#0f3440"/>
+    </linearGradient>
+    <linearGradient id="flow" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g stroke="#ffffff" stroke-opacity=".055" stroke-width="1">
+    <path d="M0 105h1200M0 210h1200M0 315h1200M0 420h1200M0 525h1200"/>
+    <path d="M150 0v630M300 0v630M450 0v630M600 0v630M750 0v630M900 0v630M1050 0v630"/>
+  </g>
+  <!-- the panel -->
+  <rect x="120" y="120" width="960" height="390" rx="24" fill="#ffffff" fill-opacity=".07"/>
+  <rect x="120" y="120" width="960" height="390" rx="24" fill="none" stroke="#ffffff" stroke-opacity=".14"/>
+  <rect x="156" y="156" width="180" height="11" rx="5.5" fill="#ffffff" fill-opacity=".3"/>
+
+  <!-- four component rows -->
+  <g>
+    <circle cx="176" cy="238" r="12" fill="#fb7185" fill-opacity=".25"/>
+    <circle cx="176" cy="238" r="6" fill="#fb7185"/>
+    <rect x="204" y="232" width="212" height="11" rx="5.5" fill="#ffffff" fill-opacity=".6"/>
+    <rect x="640" y="232" width="150" height="11" rx="5.5" fill="#fb7185" fill-opacity=".45"/>
+
+    <circle cx="176" cy="296" r="12" fill="#fbbf24" fill-opacity=".25"/>
+    <circle cx="176" cy="296" r="6" fill="#fbbf24"/>
+    <rect x="204" y="290" width="164" height="11" rx="5.5" fill="#ffffff" fill-opacity=".6"/>
+    <rect x="640" y="290" width="150" height="11" rx="5.5" fill="#fbbf24" fill-opacity=".4"/>
+
+    <circle cx="176" cy="354" r="12" fill="#34d399" fill-opacity=".25"/>
+    <circle cx="176" cy="354" r="6" fill="#34d399"/>
+    <rect x="204" y="348" width="188" height="11" rx="5.5" fill="#ffffff" fill-opacity=".6"/>
+    <rect x="640" y="348" width="112" height="11" rx="5.5" fill="#34d399" fill-opacity=".4"/>
+
+    <circle cx="176" cy="412" r="12" fill="#34d399" fill-opacity=".25"/>
+    <circle cx="176" cy="412" r="6" fill="#34d399"/>
+    <rect x="204" y="406" width="146" height="11" rx="5.5" fill="#ffffff" fill-opacity=".6"/>
+    <rect x="640" y="406" width="112" height="11" rx="5.5" fill="#34d399" fill-opacity=".4"/>
+  </g>
+
+  <!-- the transition -->
+  <path d="M860 470C940 470 960 300 1050 300" fill="none" stroke="url(#flow)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="860" cy="470" r="9" fill="#fb7185"/>
+  <circle cx="1050" cy="300" r="9" fill="#34d399"/>
+
+  <!-- the human words, once -->
+  <rect x="120" y="546" width="480" height="11" rx="5.5" fill="#ffffff" fill-opacity=".16"/>
+  <rect x="120" y="572" width="336" height="11" rx="5.5" fill="#ffffff" fill-opacity=".1"/>
+  <rect x="1" y="1" width="1198" height="628" fill="none" stroke="#ffffff" stroke-opacity=".1"/>
+</svg>

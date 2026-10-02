@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+{% import "partials/ui.html" as ui %}
+
+{#
+  Listing page for a content section (Products, Services). Zola uses this
+  generic template unless a section provides its own — the blog has one at
+  templates/blog/section.html.
+#}
+
+{% block content %}
+{%- set_global E = section.extra -%}
+
+<section class="page-hero">
+  <div class="container">
+    {%- set_global eyebrow = "" -%}
+    {%- if E.eyebrow is defined -%}{%- set_global eyebrow = E.eyebrow -%}{%- endif %}
+    {{ ui::page_h(eyebrow=eyebrow, title=section.title, text=section.description) }}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {%- if E.intro is defined %}
+    <div class="section-intro">{{ E.intro | safe }}</div>
+    {%- endif %}
+
+    {%- if section.pages | length > 0 %}
+    <div class="entry-list">
+      {%- for p in section.pages %}{{ ui::entry(e=p) }}{% endfor %}
+    </div>
+    {%- else %}
+    <p class="muted">Nothing published here yet.</p>
+    {%- endif %}
+  </div>
+</section>
+
+{%- if E.cta is defined %}{{ ui::cta_band(c=E.cta) }}{% endif %}
+{% endblock %}

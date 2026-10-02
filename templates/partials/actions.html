@@ -1,0 +1,17 @@
+{#
+  Action buttons driven by front matter, kept in their own module so that
+  templates which import one can call the other by alias.
+
+  Why the indirection: Tera resolves `self::macro` only inside a template that
+  has no `{% import %}` of its own. Routing action buttons through a separate
+  module lets component macros compose without repeating the field guards.
+#}
+{% import "partials/icons.html" as m %}
+
+{% macro action(a) %}
+{%- set_global variant = "primary" -%}
+{%- if a.variant is defined and a.variant != "" -%}{%- set_global variant = a.variant -%}{%- endif -%}
+{%- set_global ico = "" -%}
+{%- if a.icon is defined -%}{%- set_global ico = a.icon -%}{%- endif -%}
+{{ m::button(text=a.label, url=a.url, variant=variant, icon=ico) }}
+{% endmacro action %}

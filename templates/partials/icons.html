@@ -1,0 +1,32 @@
+{#
+  Inline icons and the small set of primitives built on top of them.
+  Icons come from data/icons.toml and inherit `currentColor` from whatever
+  contains them, so they recolour with the theme automatically.
+
+  Nothing here calls `self::`: Tera only resolves that reliably at the top
+  level of a render, so every macro reaches for an explicit alias instead.
+#}
+{% import "partials/svg.html" as s %}
+
+{#- Forwarder so callers only need this module for everyday icons. -#}
+{% macro icon(name, cls="icon", size=24, label="") %}{{ s::icon(name=name, cls=cls, size=size, label=label) }}{% endmacro icon %}
+
+{% macro icon_link(name, url, label, cls="social-link") %}
+<a class="{{ cls }}" href="{{ url | safe }}" title="{{ label }}"{{ s::external_attrs(url=url) }}>{{ s::icon(name=name, size=20, label=label) }}</a>
+{% endmacro icon_link %}
+
+{% macro badge(text, variant="", icon="") %}
+<span class="badge{% if variant %} badge--{{ variant }}{% endif %}">{% if icon %}{{ s::icon(name=icon, size=14) }}{% endif %}{{ text }}</span>
+{% endmacro badge %}
+
+{% macro button(text, url, variant="primary", icon="", cls="") %}
+<a class="btn btn--{{ variant }}{% if cls %} {{ cls }}{% endif %}" href="{{ url | safe }}"{{ s::external_attrs(url=url) }}>{% if icon %}{{ s::icon(name=icon, size=18) }}{% endif %}{{ text }}</a>
+{% endmacro button %}
+
+{% macro button_block(text, url, variant="secondary", icon="") %}
+<a class="btn btn--{{ variant }} btn--block" href="{{ url | safe }}">{% if icon %}{{ s::icon(name=icon, size=18) }}{% endif %}{{ text }}</a>
+{% endmacro button_block %}
+
+{% macro link_arrow(text, url) %}
+<a class="link-arrow" href="{{ url | safe }}">{{ text }}{{ s::icon(name="arrow-right", size=16) }}</a>
+{% endmacro link_arrow %}

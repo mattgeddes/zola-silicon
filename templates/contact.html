@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+{% import "partials/ui.html" as ui %}
+
+{#
+  Contact page. Details come from [extra.contact] in config.toml so they stay in
+  one place and appear in the footer and here at the same time. Each entry is
+  skipped if the value is empty.
+#}
+
+{% block content %}
+{%- set_global E = page.extra -%}
+{%- set_global C = config.extra.contact -%}
+
+<section class="page-hero">
+  <div class="container">
+    {%- set_global eyebrow = "" -%}
+    {%- if E.eyebrow is defined -%}{%- set_global eyebrow = E.eyebrow -%}{%- endif %}
+    {{ ui::page_h(eyebrow=eyebrow, title=page.title, text=page.description) }}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contact-grid">
+    <div>
+      <div class="prose">
+        {{ page.content | safe }}
+      </div>
+    </div>
+
+    <aside class="contact-aside">
+      <h2 class="contact-aside__title">{% if E.aside_title is defined %}{{ E.aside_title }}{% else %}Get in touch{% endif %}</h2>
+
+      <ul class="contact-list">
+        {%- if C.email is defined and C.email %}
+        <li>
+          <span class="contact-list__icon">{{ m::icon(name="mail", size=18) }}</span>
+          <span>
+            <span class="contact-list__label">Email</span>
+            <span class="contact-list__value"><a href="mailto:{{ C.email }}">{{ C.email }}</a></span>
+          </span>
+        </li>
+        {%- endif %}
+
+        {%- if C.phone is defined and C.phone %}
+        <li>
+          <span class="contact-list__icon">{{ m::icon(name="phone", size=18) }}</span>
+          <span>
+            <span class="contact-list__label">Phone</span>
+            <span class="contact-list__value"><a href="tel:{{ C.phone | replace(from=" ", to="") }}">{{ C.phone }}</a></span>
+          </span>
+        </li>
+        {%- endif %}
+
+        {%- if C.address is defined and C.address %}
+        <li>
+          <span class="contact-list__icon">{{ m::icon(name="map-pin", size=18) }}</span>
+          <span>
+            <span class="contact-list__label">Address</span>
+            <span class="contact-list__value">{{ C.address | safe | replace(from="\n", to="<br>") | safe }}</span>
+          </span>
+        </li>
+        {%- endif %}
+
+        {%- if C.hours is defined and C.hours %}
+        <li>
+          <span class="contact-list__icon">{{ m::icon(name="clock", size=18) }}</span>
+          <span>
+            <span class="contact-list__label">Hours</span>
+            <span class="contact-list__value">{{ C.hours }}</span>
+          </span>
+        </li>
+        {%- endif %}
+      </ul>
+
+      {%- if C.email is defined and C.email %}
+      <div class="contact-aside__actions">
+        {{ m::button(text="Send an email", url="mailto:" ~ C.email, variant="primary", icon="mail") }}
+      </div>
+      {%- endif %}
+
+      {%- if E.note is defined %}
+      <p class="subtle">{{ E.note }}</p>
+      {%- endif %}
+    </aside>
+  </div>
+</section>
+
+{%- if E.cta is defined %}{{ ui::cta_band(c=E.cta) }}{% endif %}
+{% endblock %}

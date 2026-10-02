@@ -1,0 +1,26 @@
+{#
+  Responsive, click-to-play video (MP4/H.264 or WebM).
+
+      {{< video(src="/media/demo.mp4", poster="/images/demo.jpg", caption="...") >}}
+
+  `src` is required. `poster` and `caption` are optional. For a Markdown
+  fallback beneath the player, use the body form:
+
+      {% video(src="/media/demo.mp4") %}
+      Your browser cannot play this video.
+      {% end %}
+#}
+<figure class="video">
+  <video controls preload="none"
+    {%- if poster is defined %} poster="{{ poster }}"{% endif %}
+    {%- if caption is defined %} aria-label="{{ caption }}"{% endif %}>
+    <source src="{{ src }}">
+    <p>Your browser cannot play this video. <a href="{{ src | safe }}">Download it instead.</a></p>
+  </video>
+  {%- if caption is defined %}
+  <figcaption class="subtle">{{ caption }}</figcaption>
+  {%- endif %}
+  {%- if body is defined %}
+  <div class="prose">{{ body | safe }}</div>
+  {%- endif %}
+</figure>

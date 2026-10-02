@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+
+{% block title %}<title>Page not found · {{ config.title }}</title>{% endblock %}
+
+{% block content %}
+<div class="container error-page">
+  <div class="error-page__inner">
+    <p class="error-page__code">404</p>
+    <h1>This page has left the nest</h1>
+    <p class="lead">The page you asked for does not exist, or it has moved. Try the links below.</p>
+    <div class="btn-row btn-row--center">
+      {{ m::button(text="Back to home", url="/", variant="primary", icon="arrow-right") }}
+      {{ m::button(text="Contact us", url="/contact/", variant="secondary", icon="mail") }}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{%- import "partials/icons.html" as m -%}
+{%- set has_page = page is defined and page.title -%}
+{%- set has_section = section is defined and section.title -%}
+{%- set doc_title = config.title -%}
+{%- if has_page -%}{%- set_global doc_title = page.title -%}
+{%- elif has_section -%}{%- set_global doc_title = section.title -%}{%- endif -%}
+{%- set doc_description = "" -%}
+{%- if page is defined and page.description -%}{%- set_global doc_description = page.description -%}
+{%- elif section is defined and section.description -%}{%- set_global doc_description = section.description -%}
+{%- elif config.description -%}{%- set_global doc_description = config.description -%}{%- endif -%}
+{#- The 404 template is rendered without current_url/current_path, so both are
+    given a fallback here rather than in every template that uses them. -#}
+{%- set_global cur_url = config.base_url -%}
+{%- set_global cur_path = "/" -%}
+{%- if current_url is defined -%}{%- set_global cur_url = current_url -%}{%- endif -%}
+{%- if current_path is defined -%}{%- set_global cur_path = current_path -%}{%- endif -%}
+<!doctype html>
+<html lang="{{ lang }}" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+{% block title %}
+{% if has_page and page.title != config.title -%}
+<title>{{ page.title }} · {{ config.title }}</title>
+{%- elif has_section and section.title != config.title -%}
+<title>{{ section.title }} · {{ config.title }}</title>
+{%- else -%}
+<title>{{ config.title }}{% if config.description %} · {{ config.description }}{% endif %}</title>
+{%- endif %}
+{% endblock %}
+
+{% if doc_description %}
+<meta name="description" content="{{ doc_description }}">
+{% endif %}
+<link rel="canonical" href="{{ cur_url | safe }}">
+
+{% block og %}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ config.title }}">
+<meta property="og:title" content="{{ doc_title }}">
+<meta property="og:description" content="{{ doc_description }}">
+<meta property="og:url" content="{{ cur_url | safe }}">
+<meta property="og:image" content="{{ config.base_url }}/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ doc_title }}">
+{% endblock %}
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/css/main.css">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0d16" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Zola">
+
+{#-
+  Theme bootstrap. Inline and run before first paint so a visitor who has
+  chosen dark mode never sees a flash of the light palette. Also drops the
+  `no-js` class that the stylesheet uses to lay out the nav without JS.
+-#}
+<script>
+(function () {
+  var d = document.documentElement;
+  d.classList.remove("no-js");
+  d.classList.add("js");
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "light" || t === "dark") { d.dataset.theme = t; }
+  } catch (e) { /* private mode: fall back to the OS preference */ }
+})();
+</script>
+</head>
+
+{#
+  Section gate. One switch per top-level section lives in config.toml under
+  [extra.sections]. Zola always generates a file for every content page, so a
+  switched-off section is served as a minimal document that sends the visitor
+  back to the home page. The header, footer and sitemap read the same flags.
+#}
+{%- set first_segment = cur_path | trim_start_matches(pat="/") | split(pat="/") | first -%}
+{%- set is_gated = first_segment in config.extra.sections -%}
+{%- set gate_open = true -%}
+{%- if is_gated -%}{%- set_global gate_open = config.extra.sections[first_segment] -%}{%- endif -%}
+
+{% if is_gated and not gate_open -%}
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ doc_title }} · {{ config.title }}</title>
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url={{ config.base_url }}/">
+<link rel="canonical" href="{{ config.base_url }}/">
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center;
+         padding: 2rem; text-align: center;
+         font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  p { color: #6f7889; line-height: 1.6; }
+  a { color: #4f46e5; }
+</style>
+</head>
+<body>
+  <p>This part of the site is switched off.<br><a href="{{ config.base_url }}/">Back to the home page</a></p>
+</body>
+</html>
+{% else -%}
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+{% include "partials/header.html" %}
+
+<main id="main">
+{%- block content %}{% endblock -%}
+</main>
+
+{% include "partials/footer.html" %}
+
+<script src="/js/main.js" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
+{% endif -%}

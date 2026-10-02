@@ -1,0 +1,56 @@
+{%- import "partials/icons.html" as m -%}
+{#
+  Navigation entries come from [[extra.nav]] in config.toml. An entry renders
+  when it has no `key` (an always-on link, e.g. a "#pricing" anchor) or when
+  its key is switched on in [extra.sections].
+#}
+{%- set_global PATH = "/" -%}
+{%- if current_path is defined -%}{%- set_global PATH = current_path -%}{%- endif -%}
+{%- set_global CUR_SEG = PATH | trim_start_matches(pat="/") | split(pat="/") | first -%}
+
+<header class="site-header" id="site-header" data-scrolled="false">
+  <div class="container site-header__inner">
+    <a class="site-logo" href="/">
+      {% include "partials/logo.html" %}
+      <span class="site-logo__name">{{ config.extra.brand.name }}</span>
+      {% if config.extra.brand.suffix %}<span class="site-logo__suffix">{{ config.extra.brand.suffix }}</span>{% endif %}
+    </a>
+
+    <nav class="site-nav" id="site-nav" data-open="false" aria-label="Main">
+      <ul class="site-nav__list">
+        {%- for item in config.extra.nav %}
+        {%- set_global item_visible = true -%}
+        {%- if item.key is defined -%}
+        {%- set_global item_visible = false -%}
+        {%- if item.key in config.extra.sections -%}
+        {%- set_global item_visible = config.extra.sections[item.key] -%}
+        {%- endif -%}
+        {%- endif -%}
+        {%- set_global item_seg = item.url | trim_start_matches(pat="/") | split(pat="/") | first -%}
+        {%- set_global is_current = false -%}
+        {%- if item_seg == CUR_SEG and item_seg != "" -%}
+        {%- set_global is_current = true -%}
+        {%- endif -%}
+        {%- if item_visible %}
+        <li>
+          <a class="site-nav__link" href="{{ item.url | safe }}"{% if is_current %} aria-current="page"{% endif %}>{{ item.label }}</a>
+        </li>
+        {%- endif -%}
+        {%- endfor %}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <span class="theme-toggle__sun">{{ m::icon(name="sun", size=18) }}</span>
+        <span class="theme-toggle__moon">{{ m::icon(name="moon", size=18) }}</span>
+      </button>
+
+      <a class="btn btn--primary btn--sm header-cta" href="/contact/">Get started</a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__icon" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>

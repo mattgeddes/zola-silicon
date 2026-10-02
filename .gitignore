@@ -1,0 +1,15 @@
+# Zola build output
+/public/
+/.zola-cache/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Env files, if you add any
+.env
+.env.local

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+{% import "partials/ui.html" as ui %}
+
+{#
+  Blog post. Used for every page in content/blog/, so the same layout works
+  for a dated post and for a standalone page living in the blog folder.
+#}
+
+{% block content %}
+{%- set_global E = page.extra -%}
+{%- set_global date_label = "" -%}
+{%- if page.date -%}{%- set_global date_label = page.date | date(format="%d %B %Y") -%}{%- endif %}
+
+<article>
+  <section class="page-hero">
+    <div class="container">
+      <div class="post-header">
+        <ul class="breadcrumbs">
+          <li><a href="/">Home</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><span aria-current="page">{{ page.title }}</span></li>
+        </ul>
+
+        <h1 class="page-hero__title">{{ page.title }}</h1>
+
+        {%- if page.description is defined and page.description %}
+        <p class="page-hero__text">{{ page.description }}</p>
+        {%- endif %}
+
+        <div class="post-meta">
+          {%- if date_label %}
+          <span class="post-meta__item">{{ m::icon(name="calendar", size=16) }}<time datetime="{{ page.date }}">{{ date_label }}</time></span>
+          {%- endif %}
+          {%- if page.reading_time and page.reading_time > 0 %}
+          <span class="post-meta__item">{{ m::icon(name="clock", size=16) }}{{ page.reading_time }} min read</span>
+          {%- endif %}
+          {%- if E.tag is defined and E.tag != "" %}
+          <span class="post-meta__item">{{ m::icon(name="tag", size=16) }}{{ E.tag }}</span>
+          {%- endif %}
+          {%- if E.author is defined and E.author != "" %}
+          <span class="post-meta__item">{{ m::icon(name="users", size=16) }}{{ E.author }}</span>
+          {%- endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- if E.image is defined %}
+  {%- set_global cover_alt = "" -%}
+  {%- if E.image_alt is defined -%}{%- set_global cover_alt = E.image_alt -%}{%- endif %}
+  <div class="container">
+    <figure class="post-cover">
+      <img src="{{ E.image }}" alt="{{ cover_alt }}" width="1200" height="630" decoding="async">
+      {%- if E.image_caption is defined and E.image_caption != "" %}
+      <figcaption class="subtle">{{ E.image_caption }}</figcaption>
+      {%- endif %}
+    </figure>
+  </div>
+  {%- endif %}
+
+  <div class="section section--tight">
+    <div class="container">
+      <div class="prose">
+        {{ page.content | safe }}
+      </div>
+    </div>
+  </div>
+</article>
+
+{%- if page.lower or page.higher %}
+<div class="container">
+  <nav class="post-nav" aria-label="More posts">
+    {%- if page.higher %}
+    <a class="post-nav__link post-nav__link--prev" href="{{ page.higher.permalink | safe }}" rel="prev">
+      <span class="post-nav__label">{{ m::icon(name="arrow-right", size=14, cls="flip") }} Newer</span>
+      <span class="post-nav__title">{{ page.higher.title }}</span>
+    </a>
+    {%- else %}<span></span>{% endif %}
+
+    {%- if page.lower %}
+    <a class="post-nav__link post-nav__link--next" href="{{ page.lower.permalink | safe }}" rel="next">
+      <span class="post-nav__label">Older {{ m::icon(name="arrow-right", size=14) }}</span>
+      <span class="post-nav__title">{{ page.lower.title }}</span>
+    </a>
+    {% endif %}
+  </nav>
+</div>
+{%- endif %}
+
+{%- if E.cta is defined %}{{ ui::cta_band(c=E.cta) }}{% endif %}
+{% endblock %}

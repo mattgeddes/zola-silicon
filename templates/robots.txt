@@ -1,0 +1,5 @@
+{%- set_global CFG = load_data(path="config.toml") -%}
+User-agent: *
+Allow: /
+
+Sitemap: {{ CFG.base_url }}/sitemap.xml
