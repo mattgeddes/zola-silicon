@@ -39,6 +39,19 @@ external_links_no_follow = true
 external_links_no_referrer = true
 
 # -----------------------------------------------------------------------------
+# Taxonomies
+# -----------------------------------------------------------------------------
+# Declaring a taxonomy here is what makes Zola generate /tags/<term>/ pages and
+# collect the values from each page's [taxonomies] front matter.
+#
+# IMPORTANT for anyone consuming this repository as a theme: taxonomies are a
+# root-level config key, not [extra], and Zola only reads [extra] from a
+# theme's theme.toml. A theme cannot supply this, so if you want tags on your
+# own site you must copy these two lines into your config.toml.
+[[taxonomies]]
+name = "tags"
+
+# -----------------------------------------------------------------------------
 # Feeds — the blog section sets generate_feeds = true in its own front matter
 # -----------------------------------------------------------------------------
 feed_limit = 20
@@ -64,6 +77,9 @@ feed_limit = 20
 # after switching one off.
 # -----------------------------------------------------------------------------
 [extra]
+# Shown in the footer. Bump alongside the git tag and CHANGELOG.md.
+version = "0.8.0"
+
 # Where the icon library is loaded from, relative to the site root. See the
 # "Using this template as a Zola theme" section of the README: when your site
 # consumes this repo as a theme, Zola does not search the theme's data/

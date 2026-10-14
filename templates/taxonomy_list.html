@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+
+{#
+  Index of every tag, at /tags/. Individual terms live at /tags/<slug>/ and are
+  rendered by templates/taxonomy_single.html.
+
+  Zola gives taxonomy templates neither `page` nor `kind`, so the heading is
+  fixed text and the data comes from get_taxonomy. Note the path: taxonomies
+  live at the site root, not under the section that uses them, so these are
+  siblings of /blog/. The blog index links here.
+
+  The card is an <article>, not an <a>: an anchor cannot contain another anchor,
+  and the browser's parser would silently break the layout. The title link is
+  stretched over the card instead, so the whole card stays clickable with one
+  tab stop, exactly as in partials/ui.html's post_card.
+#}
+
+{% block content %}
+{%- set_global LIST = get_taxonomy(kind="tags") -%}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero__inner">
+      <p class="eyebrow">Topics</p>
+      <h1 class="page-hero__title">Browse by topic</h1>
+      <p class="page-hero__text">
+        {{ LIST.items | length }} topics across the blog.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {%- if LIST.items | length > 0 %}
+    <div class="grid grid--3">
+      {%- for item in LIST.items | sort(attribute="name") %}
+      <article class="card card--link topic-card">
+        <h2 class="card__title">
+          <a href="{{ item.permalink | safe }}">{{ item.name }}</a>
+        </h2>
+        <p class="card__text">
+          {{ item.page_count }} post{% if item.page_count != 1 %}s{% endif %}.
+        </p>
+        <div class="card__foot">
+          Browse<span>{{ m::icon(name="arrow-right", size=16) }}</span>
+        </div>
+      </article>
+      {%- endfor %}
+    </div>
+    {%- else %}
+    <p class="muted">
+      No tags yet. Add <code>tags = ["…"]</code> to a post's
+      <code>[taxonomies]</code> front matter.
+    </p>
+    {%- endif %}
+  </div>
+</section>
+{% endblock %}

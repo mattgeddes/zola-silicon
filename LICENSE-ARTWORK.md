@@ -14,7 +14,8 @@ commercially, without attribution and without asking permission.
 
 - Illustrations: `hero-dashboard.svg`, `split-architecture.svg`,
   `posts/*.svg`, `logos/*.svg`, `logo.svg`
-- The 62 icons in `data/icons.toml`
+- The line icons in `data/icons.toml`
+- The solid brand marks in `data/icons.toml` (see "Brand marks" below)
 - The favicon and every raster icon derived from it
 - The Open Graph card (`og.svg`, `og.png`)
 
@@ -28,6 +29,31 @@ The sample company ("Kestrel"), its product names, the customer logos and all
 body copy are fictional, written for this template. They carry the same CC0
 dedication, but you should replace them with your own material anyway — a
 template that ships a real business is not much of a template.
+
+## Brand marks
+
+The five entries under "Brand marks" in `data/icons.toml` — `bluesky`,
+`github`, `mastodon` and `x` — are reproductions of third-party trademarks,
+taken from [Simple Icons](https://simpleicons.org/), which publishes its icon
+data under CC0 1.0. The path data therefore carries the same dedication as the
+rest of this file, and each entry records its provenance in a comment.
+
+`linkedin` and `nostr` are **not** reproductions. Simple Icons removed the
+LinkedIn mark for trademark reasons and never carried one for Nostr, so both are
+hand-drawn for this template: a geometric "in" and a geometric "N", which are
+stand-ins rather than the real logos. Swap in the official assets if you publish
+a site that uses those networks.
+
+**CC0 covers the icon data, not the trademarks.** The GitHub, X, Mastodon and
+Bluesky word and device marks remain the property of their respective owners.
+Simple Icons' CC0 dedication covers its own reproduction of them, and this
+repository passes that on unchanged; trademark rights are unaffected. These
+icons are here so a demo site can link out plausibly. Using them to imply
+endorsement, or to represent a service you do not run, is not covered by this
+licence.
+
+The same caution applies to `favicon.svg`, `og.svg` and `logo.svg`: they carry a
+generic geometric mark rather than anyone's real logo.
 
 ## Third-party assets
 

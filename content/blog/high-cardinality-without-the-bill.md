@@ -3,9 +3,11 @@ title = "High cardinality without the bill"
 description = "You do not have to choose between useful dimensions and affordable storage. You have to choose before you store."
 date = 2026-04-09
 template = "blog/page.html"
+[taxonomies]
+tags = ["data", "observability"]
+
 [extra]
 icon = "chart"
-tag = "Data"
 image = "/images/posts/high-cardinality.svg"
 image_alt = "Abstract illustration of many data points funneling into a narrow channel"
 author = "Tomas Reinholt"

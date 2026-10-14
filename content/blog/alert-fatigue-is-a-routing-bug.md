@@ -3,9 +3,11 @@ title = "Alert fatigue is a routing bug, not a monitoring bug"
 description = "Six engineers woke up for one database failover. The dashboard was fine the whole time. Here is what we changed."
 date = 2026-08-18
 template = "blog/page.html"
+[taxonomies]
+tags = ["on-call", "alerting"]
+
 [extra]
 icon = "bolt"
-tag = "On-call"
 image = "/images/posts/alert-routing.svg"
 image_alt = "Abstract illustration of six alert paths converging on a single node"
 author = "Nadia Okon"

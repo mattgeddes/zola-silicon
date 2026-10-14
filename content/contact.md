@@ -6,6 +6,8 @@ template = "contact.html"
 [extra]
 eyebrow = "Contact"
 aside_title = "Direct lines"
+show_social = true
+social_title = "Find us elsewhere"
 note = "Sample details — change the email, phone, address and hours in the [extra.contact] block of config.toml."
 +++
 

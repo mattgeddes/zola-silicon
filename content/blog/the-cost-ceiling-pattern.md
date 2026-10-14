@@ -3,9 +3,11 @@ title = "The cost ceiling pattern"
 description = "Instead of a monthly budget alarm, we made the collector enforce a per-service ceiling at ingestion. Overspend now stops the pipeline, not the finance meeting."
 date = 2026-07-02
 template = "blog/page.html"
+[taxonomies]
+tags = ["cost", "observability"]
+
 [extra]
 icon = "gauge"
-tag = "Cost"
 image = "/images/posts/cost-ceiling.svg"
 image_alt = "Abstract illustration of a rising usage chart meeting a horizontal limit line"
 author = "Tomas Reinholt"

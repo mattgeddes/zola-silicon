@@ -3,9 +3,11 @@ title = "We replaced our status page with a cron job"
 description = "Status pages are where you go to confirm an outage is real. Ours now derives entirely from the same telemetry our customers already have."
 date = 2026-02-11
 template = "blog/page.html"
+[taxonomies]
+tags = ["operations", "reliability"]
+
 [extra]
 icon = "globe"
-tag = "Operations"
 image = "/images/posts/status-page.svg"
 image_alt = "Abstract illustration of a status indicator turning from red to green"
 author = "Nadia Okon"

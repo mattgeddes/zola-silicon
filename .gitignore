@@ -2,6 +2,10 @@
 /public/
 /.zola-cache/
 
+# Generated on each build by scripts/generate-llms.py
+/static/llms.txt
+/static/llms-full.txt
+
 # Editor / OS noise
 .DS_Store
 Thumbs.db
@@ -14,5 +18,6 @@ Thumbs.db
 .env
 .env.local
 
-# Local session tracking, not part of the template
+# Local scratch files, not part of the template
 opencode-session.txt
+updates.md

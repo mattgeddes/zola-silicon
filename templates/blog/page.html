@@ -29,7 +29,9 @@
         <p class="page-hero__text">{{ page.description }}</p>
         {%- endif %}
 
-        <div class="post-meta">
+        {{ ui::tag_chips(page_obj=page) }}
+
+      <div class="post-meta">
           {%- if date_label %}
           <span class="post-meta__item">{{ m::icon(name="calendar", size=16) }}<time datetime="{{ page.date }}">{{ date_label }}</time></span>
           {%- endif %}

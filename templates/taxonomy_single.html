@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+{% import "partials/ui.html" as ui %}
+
+{#
+  A single tag page, at /tags/<slug>/.
+
+  Zola gives taxonomy templates neither `page` nor `kind`, so the term is
+  recovered from current_path and looked up. If your slugify config rewrites
+  characters, the lookup below still works because it matches on slug.
+#}
+
+{% block content %}
+{%- set_global LIST = get_taxonomy(kind="tags") -%}
+{%- set_global path = current_path | trim_start_matches(pat="/") -%}
+{%- set_global segs = path | split(pat="/") -%}
+{%- set_global term_slug = "" -%}
+{%- for i in range(end=segs | length) -%}
+{%- set_global part = segs | slice(start=i, end=i + 1) | first -%}
+{%- if part != "" and part != "tags" and term_slug == "" -%}{%- set_global term_slug = part -%}{%- endif -%}
+{%- endfor -%}
+{%- set_global TERM = "" -%}
+{%- for item in LIST.items -%}
+{%- if item.slug == term_slug -%}{%- set_global TERM = item -%}{%- endif -%}
+{%- endfor -%}
+{%- set_global TERM_NAME = term_slug -%}
+{%- set_global TERM_COUNT = 0 -%}
+{%- if TERM != "" -%}
+{%- set_global TERM_NAME = TERM.name -%}
+{%- set_global TERM_COUNT = TERM.page_count -%}
+{%- endif -%}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero__inner">
+      <ul class="breadcrumbs">
+        <li><a href="/">Home</a></li>
+        <li><a href="/tags/">Topics</a></li>
+        <li><span aria-current="page">{{ TERM_NAME }}</span></li>
+      </ul>
+      <p class="eyebrow">Topic</p>
+      <h1 class="page-hero__title">{{ TERM_NAME }}</h1>
+      <p class="page-hero__text">
+        {{ TERM_COUNT }} post{% if TERM_COUNT != 1 %}s{% endif %} tagged
+        &ldquo;{{ TERM_NAME }}&rdquo;.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {%- if TERM != "" and TERM.pages | length > 0 %}
+    <div class="post-list">
+      {%- for p in TERM.pages | sort(attribute="date") | reverse %}
+      {{ ui::post_card(p=p) }}
+      {%- endfor %}
+    </div>
+    <div class="btn-row btn-row--center latest-more">
+      {{ m::button(text="All topics", url="/tags/", variant="secondary", icon="arrow-right") }}
+    </div>
+    {%- else %}
+    <p class="muted">Nothing tagged with this topic yet.</p>
+    {%- endif %}
+  </div>
+</section>
+{% endblock %}

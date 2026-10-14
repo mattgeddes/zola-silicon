@@ -306,8 +306,12 @@ Zola's grammar uses them for quoted argument values.
 
 ## Icons
 
-62 hand-drawn, stroke-based icons live in `data/icons.toml` as the inner markup
-of a 24×24 `<svg>` that inherits `currentColor`. To add one, copy any entry and
+67 icons live in `data/icons.toml` as the inner markup of a 24×24 `<svg>` that
+inherits `currentColor`: 62 stroke-based line icons, plus a section of solid
+brand marks (`x`, `mastodon`, `github`, `bluesky`, `linkedin`, `nostr`,
+alongside `rss`) for social links. The brand marks are reproductions of third-party trademarks
+and carry their provenance in a comment; see `LICENSE-ARTWORK.md`. The sample
+contact page previews all six so you can see them in context. To add one, copy any entry and
 edit the paths; to use one:
 
 ```md
@@ -321,6 +325,67 @@ edit the paths; to use one:
 
 An unknown name falls back to the help glyph rather than rendering an empty
 box, so a typo is visible instead of silent.
+
+## llms.txt
+
+[llms.txt](https://llmstxt.org/) is a Markdown file at `/llms.txt` describing a
+site for LLM assistants, with `/llms-full.txt` holding the full text. Both are
+generated from `content/` by `scripts/generate-llms.py` into `static/`, where
+Zola copies them to the site root.
+
+```sh
+make build     # regenerate, then zola build
+make serve     # regenerate, then zola serve
+make check     # fail if anything generated is stale, for CI
+```
+
+Zola cannot render these itself: it renders a template only when a page claims
+it, with two special cases (`sitemap.xml` and `robots.txt`). An ordinary
+`templates/llms.txt` is silently ignored, which is why the files are produced
+before the build rather than by a template.
+
+They are gitignored and rebuilt every time. `llms.txt` is a short index —
+navigation, recent writing with tags, one line per page. `llms-full.txt` is the
+body text of every page with Markdown syntax flattened, for pasting into a
+context window.
+
+Legal pages (`privacy`, `terms`) and the 404 are excluded as boilerplate rather
+than useful context. Edit the list in `EXCLUDE_SLUGS` at the top of the script to
+change that, and the wording of both documents in its `render_index` and
+`render_full` functions.
+
+## Tags
+
+The blog supports tags. Posts declare them under `[taxonomies]` — **not** at the
+top level of the front matter, where Zola silently ignores them:
+
+```toml
++++
+title = "The cost ceiling pattern"
+date = 2026-07-02
+[taxonomies]
+tags = ["cost", "observability"]
+[extra]
+icon = "gauge"
++++
+```
+
+Zola generates an index at `/tags/` and a page per tag at `/tags/<slug>/`.
+Those sit at the **site root**, not under `/blog/` — Zola puts taxonomies
+alongside sections rather than inside them — so the blog index links out to
+`/tags/`. Post cards show the tags, and posts show them as linked chips.
+
+Adding a tag is just editing the front matter; there is no registration step
+beyond the two `[[taxonomies]]` lines in `config.toml`.
+
+```toml
+[[taxonomies]]
+name = "tags"
+```
+
+If you consume this repository as a theme, copy those two lines into your own
+`config.toml`. Taxonomies are a root-level config key, not `[extra]`, and a
+theme cannot supply them — see "Using this template as a Zola theme".
 
 ## Colour themes
 

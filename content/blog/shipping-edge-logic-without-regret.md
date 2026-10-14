@@ -3,9 +3,11 @@ title = "Shipping edge logic without regret"
 description = "Edge functions look free until you count round trips. Four rules we now apply before anything gets deployed to nineteen regions."
 date = 2026-05-27
 template = "blog/page.html"
+[taxonomies]
+tags = ["architecture", "edge"]
+
 [extra]
 icon = "network"
-tag = "Architecture"
 image = "/images/posts/edge-logic.svg"
 image_alt = "Abstract illustration of requests fanning out from an edge to several regions"
 author = "Nadia Okon"

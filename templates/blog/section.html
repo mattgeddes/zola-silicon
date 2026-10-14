@@ -49,5 +49,14 @@
   </div>
 </section>
 
+{#- Link out to the generated taxonomy pages. They live at the site root, so
+    this is /tags/ rather than /blog/tags/. -#}
+{%- set_global TERMS = get_taxonomy(kind="tags") -%}
+{%- if TERMS.items | length > 0 %}
+<div class="btn-row btn-row--center latest-more">
+  {{ m::button(text="Browse by topic", url="/tags/", variant="secondary", icon="tag") }}
+</div>
+{%- endif %}
+
 {%- if E.newsletter is defined %}{{ ui::newsletter(n=E.newsletter) }}{% endif %}
 {% endblock %}

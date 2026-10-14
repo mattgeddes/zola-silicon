@@ -83,6 +83,32 @@
       {%- if E.note is defined %}
       <p class="subtle">{{ E.note }}</p>
       {%- endif %}
+
+      {#- Preview the inline brand icons. Real sites usually have these in the
+          footer; the contact page is a better place to show what is available. -#}
+      {%- if E.show_social is defined and E.show_social %}
+      <div class="contact-social">
+        <h2 class="contact-social__title">
+          {% if E.social_title is defined %}{{ E.social_title }}{% else %}Elsewhere{% endif %}
+        </h2>
+        {#- Written out rather than looped: Tera has no table literals, and a
+            data file for six rows would cost more than it saves. These names
+            come from the brand-mark section of data/icons.toml. -#}
+        <ul class="social-row">
+          <li class="social-preview">{{ m::icon(name="github", size=20) }}<span>GitHub</span></li>
+          <li class="social-preview">{{ m::icon(name="x", size=20) }}<span>X</span></li>
+          <li class="social-preview">{{ m::icon(name="mastodon", size=20) }}<span>Mastodon</span></li>
+          <li class="social-preview">{{ m::icon(name="bluesky", size=20) }}<span>Bluesky</span></li>
+          <li class="social-preview">{{ m::icon(name="linkedin", size=20) }}<span>LinkedIn</span></li>
+          <li class="social-preview">{{ m::icon(name="nostr", size=20) }}<span>Nostr</span></li>
+          <li class="social-preview">{{ m::icon(name="rss", size=20) }}<span>RSS</span></li>
+        </ul>
+        <p class="subtle">
+          Placeholder examples, not links. Swap the real URLs in
+          <code>[extra.social]</code> in <code>config.toml</code>.
+        </p>
+      </div>
+      {%- endif %}
     </aside>
   </div>
 </section>
