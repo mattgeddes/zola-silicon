@@ -1,4 +1,5 @@
 {%- import "partials/icons.html" as m -%}
+{%- import "partials/schema.html" as schema -%}
 {%- set has_page = page is defined and page.title -%}
 {%- set has_section = section is defined and section.title -%}
 {%- set doc_title = config.title -%}
@@ -34,6 +35,8 @@
 <meta name="description" content="{{ doc_description }}">
 {% endif %}
 <link rel="canonical" href="{{ cur_url | safe }}">
+{{ schema::organisation() }}
+{% block extra_jsonld %}{% endblock %}
 
 {% block og %}
 <meta property="og:type" content="website">

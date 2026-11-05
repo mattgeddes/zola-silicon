@@ -152,6 +152,22 @@ accent = "#39C6D6"    # Signal Cyan
 logo = ""
 
 # -----------------------------------------------------------------------------
+# Organisation structured data (JSON-LD)
+# -----------------------------------------------------------------------------
+# Optional. Every value here defaults from elsewhere in this file, so you only
+# need to set what differs. See the README section "Structured data" for the full
+# list of attributes and where each one comes from.
+[extra.organisation]
+# logo = "/images/logo.svg"   # defaults to /images/logo.svg
+# same_as = [                 # defaults to the external URLs in [[extra.social]]
+#   "https://github.com/your-org",
+# ] Leave empty to keep the built-in one. The mark is drawn on a filled
+# brand-coloured tile, so an SVG with a transparent background works well; a
+# wordmark works too, and you can hide the text beside it by leaving
+# `suffix` empty and overriding the name in your own config.
+logo = ""
+
+# -----------------------------------------------------------------------------
 # Contact details — used by the contact page and the site footer.
 # -----------------------------------------------------------------------------
 [extra.contact]

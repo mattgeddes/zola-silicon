@@ -1,0 +1,154 @@
+{#
+  JSON-LD structured data. Everything is derived from config, [extra] and the
+  page front matter, so there is nothing to keep in sync with this file.
+
+  Blocks
+    organisation()  site-wide identity, emitted on every page
+    article()       a single blog post, emitted in addition to organisation
+#}
+
+{% import "partials/json.html" as j %}
+
+{% macro organisation() %}
+{%- set_global NAME = config.extra.brand.name -%}
+{%- set_global LOGO = "/images/logo.svg" -%}
+{%- if config.extra.brand.logo is defined and config.extra.brand.logo != "" -%}
+{%- set_global LOGO = config.extra.brand.logo -%}
+{%- endif -%}
+{%- if config.extra.organisation is defined and config.extra.organisation.logo is defined and config.extra.organisation.logo != "" -%}
+{%- set_global LOGO = config.extra.organisation.logo -%}
+{%- endif -%}
+{%- set_global stripped = LOGO | trim_start_matches(pat="https://") | trim_start_matches(pat="http://") | trim_start_matches(pat="//") -%}
+{%- if stripped != LOGO -%}
+{%- set_global LOGO_URL = LOGO -%}
+{%- else -%}
+{%- set_global LOGO_URL = config.base_url ~ LOGO -%}
+{%- endif -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ j::json_str(s=NAME) }},
+  "url": {{ j::json_str(s=config.base_url) }},
+  "logo": {{ j::json_str(s=LOGO_URL) }}
+{% if config.description %},
+  "description": {{ j::json_str(s=config.description) }}
+{% endif %}
+{%- set_global SAME_BODY = "" -%}
+{%- set_global SAME_SEP = "" -%}
+{%- if config.extra.organisation is defined and config.extra.organisation.same_as is defined -%}
+  {%- for u in config.extra.organisation.same_as -%}
+  {%- set_global j = j::json_str(s=u) -%}
+  {%- set_global SAME_BODY = SAME_BODY ~ SAME_SEP ~ j -%}
+  {%- set_global SAME_SEP = "," -%}
+  {%- endfor -%}
+{%- elif config.extra.social is defined -%}
+  {%- for s in config.extra.social -%}
+  {%- set_global u = s.url -%}
+  {%- set_global stripped = u | trim_start_matches(pat="https://") | trim_start_matches(pat="http://") | trim_start_matches(pat="//") -%}
+  {%- if stripped != u -%}
+  {%- set_global j = j::json_str(s=u) -%}
+  {%- set_global SAME_BODY = SAME_BODY ~ SAME_SEP ~ j -%}
+  {%- set_global SAME_SEP = "," -%}
+  {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- if SAME_BODY != "" %},
+  "sameAs": [{{ SAME_BODY | safe }}]
+{% endif %}
+{%- set_global HAS_CONTACT = false -%}
+{%- if config.extra.contact is defined -%}
+  {%- if config.extra.contact.email is defined and config.extra.contact.email != "" -%}{%- set_global HAS_CONTACT = true -%}{%- endif -%}
+  {%- if config.extra.contact.phone is defined and config.extra.contact.phone != "" -%}{%- set_global HAS_CONTACT = true -%}{%- endif -%}
+{%- endif -%}
+{%- if HAS_CONTACT -%},
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service"
+    {%- if config.extra.contact is defined and config.extra.contact.email is defined and config.extra.contact.email != "" %},
+    "email": {{ j::json_str(s=config.extra.contact.email) }}
+    {%- endif %}
+    {%- if config.extra.contact is defined and config.extra.contact.phone is defined and config.extra.contact.phone != "" %},
+    "telephone": {{ j::json_str(s=config.extra.contact.phone) }}
+    {%- endif %}
+  }
+{%- endif %}
+}
+</script>
+{% endmacro organisation %}
+
+{% macro article() %}
+{%- set_global TITLE = page.title -%}
+{%- set_global DESC = "" -%}
+{%- if page.description is defined and page.description -%}{%- set_global DESC = page.description -%}{%- endif -%}
+{%- set_global URL = page.permalink -%}
+{%- set_global DATE = page.date -%}
+{%- set_global MODIFIED = DATE -%}
+{%- if page.updated is defined and page.updated -%}{%- set_global MODIFIED = page.updated -%}{%- endif -%}
+{%- set_global AUTHOR = config.author -%}
+{%- if AUTHOR == "" -%}{%- set_global AUTHOR = config.extra.brand.name -%}{%- endif -%}
+{%- if page.extra is defined and page.extra.author is defined and page.extra.author != "" -%}{%- set_global AUTHOR = page.extra.author -%}{%- endif -%}
+{%- set_global IMAGE = "" -%}
+{%- if page.extra is defined and page.extra.image is defined and page.extra.image != "" -%}
+  {%- set_global stripped = page.extra.image | trim_start_matches(pat="https://") | trim_start_matches(pat="http://") | trim_start_matches(pat="//") -%}
+  {%- if stripped != page.extra.image -%}
+  {%- set_global IMAGE = page.extra.image -%}
+  {%- else -%}
+  {%- set_global IMAGE = config.base_url ~ page.extra.image -%}
+  {%- endif -%}
+{%- endif -%}
+{%- if IMAGE == "" -%}{%- set_global IMAGE = config.base_url ~ "/og.png" -%}{%- endif -%}
+{%- set_global KEYWORDS = "" -%}
+{%- if page.taxonomies is defined and page.taxonomies.tags is defined and page.taxonomies.tags | length > 0 -%}
+  {%- set_global KEYWORDS = page.taxonomies.tags | join(sep=", ") -%}
+{%- elif page.extra is defined and page.extra.tag is defined and page.extra.tag != "" -%}
+  {%- set_global KEYWORDS = page.extra.tag -%}
+{%- endif -%}
+{%- set_global ORG_NAME = config.extra.brand.name -%}
+{%- set_global ORG_LOGO = config.base_url ~ "/images/logo.svg" -%}
+{%- if config.extra.brand.logo is defined and config.extra.brand.logo != "" -%}
+  {%- set_global l = config.extra.brand.logo -%}
+  {%- set_global stripped = l | trim_start_matches(pat="https://") | trim_start_matches(pat="http://") | trim_start_matches(pat="//") -%}
+  {%- if stripped != l -%}{%- set_global ORG_LOGO = l -%}
+  {%- else -%}{%- set_global ORG_LOGO = config.base_url ~ l -%}{%- endif -%}
+{%- endif -%}
+{%- if config.extra.organisation is defined and config.extra.organisation.logo is defined and config.extra.organisation.logo != "" -%}
+  {%- set_global l = config.extra.organisation.logo -%}
+  {%- set_global stripped = l | trim_start_matches(pat="https://") | trim_start_matches(pat="http://") | trim_start_matches(pat="//") -%}
+  {%- if stripped != l -%}{%- set_global ORG_LOGO = l -%}
+  {%- else -%}{%- set_global ORG_LOGO = config.base_url ~ l -%}{%- endif -%}
+{%- endif -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ j::json_str(s=TITLE) }},
+{% if DESC != "" %}
+  "description": {{ j::json_str(s=DESC) }},
+{% endif %}
+  "url": {{ j::json_str(s=URL) }},
+  "datePublished": {{ j::json_str(s=DATE) }},
+  "dateModified": {{ j::json_str(s=MODIFIED) }},
+  "author": {
+    "@type": "Person",
+    "name": {{ j::json_str(s=AUTHOR) }}
+  },
+  "image": {{ j::json_str(s=IMAGE) }},
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ j::json_str(s=ORG_NAME) }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ j::json_str(s=ORG_LOGO) }}
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ j::json_str(s=URL) }}
+  }
+{% if KEYWORDS != "" %}
+  ,"keywords": {{ j::json_str(s=KEYWORDS) }}
+{% endif %}
+}
+</script>
+{% endmacro article %}

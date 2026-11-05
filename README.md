@@ -492,6 +492,75 @@ it worse.
 4. Update the favicon and social card last, from `static/favicon.svg`.
 5. Leave the illustrations alone unless the brand demands it.
 
+## Structured data (JSON-LD)
+
+Two blocks are emitted automatically, both assembled from config, `[extra]` and
+front matter, so there is nothing to keep in sync with the template:
+
+- **`Organization`** on every page, from `[extra.brand]`, `config.description`,
+  `[extra.contact]` and `[[extra.social]]`.
+- **`Article`** on every post in `content/blog/`, from the post's front matter
+  and the organisation block above.
+
+Both render in `<head>` as `<script type="application/ld+json">`. All string
+values pass through a `json_str` macro that escapes backslashes, quotes and the
+HTML special characters, so titles and descriptions with apostrophes or
+ampersands are safe.
+
+### Attributes and where they come from
+
+**Organization**
+
+| Attribute | Source |
+| --- | --- |
+| `name` | `[extra.brand] name` |
+| `url` | `base_url` in `config.toml` |
+| `logo` | `[extra.brand] logo`, else `[extra.organisation] logo`, else `/images/logo.svg` |
+| `description` | `description` in `config.toml` |
+| `sameAs` | `[extra.organisation] same_as` if set, else the external URLs in `[[extra.social]]` |
+| `contactPoint.email` | `[extra.contact] email` |
+| `contactPoint.telephone` | `[extra.contact] phone` |
+
+**Article**
+
+| Attribute | Source |
+| --- | --- |
+| `headline` | `title` |
+| `description` | `description` |
+| `url` | the page's permalink |
+| `datePublished` | `date` |
+| `dateModified` | `updated`, falling back to `date` |
+| `author.name` | `[extra] author`, falling back to `author` in `config.toml`, then the brand name |
+| `image` | `[extra] image`, made absolute; falls back to `/og.png` |
+| `keywords` | `tags` under `[taxonomies]` (joined), falling back to `[extra] tag` |
+| `publisher.name` | `[extra.brand] name` |
+| `publisher.logo.url` | as `logo` above |
+| `mainEntityOfPage` | the page's permalink |
+
+### Adding or overriding on your own site
+
+- **Organisation details** come from config, so editing `[extra.brand]`,
+  `[extra.contact]` and `[[extra.social]]` is enough. Add an `[extra.organisation]`
+  block only if you want to override the logo path or the `sameAs` list.
+- **Per post**, set these under `[extra]` (or as root fields where noted):
+  `author`, `image`, `image_alt`, `tag` (or `[taxonomies] tags`), and
+  `updated` (root field) for a revised date.
+- **To give a non-blog page an Article block**, call `{{ schema::article() }}`
+  from its template, or override the `extra_jsonld` block. Other types
+  (Product, Service, FAQPage) are not emitted yet; add them the same way if
+  you need them.
+
+### Checking the output
+
+Every block is validated as JSON when the site builds (the test suite parses
+each one). To inspect a page by hand:
+
+```sh
+curl -s https://yoursite.example.com/blog/a-post/ | grep -A40 'application/ld+json'
+```
+
+Or paste a URL into Google's Rich Results Test.
+
 ## Graphics
 
 All artwork was drawn for this template and is released **CC0** (public

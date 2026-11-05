@@ -1,0 +1,1 @@
+{% macro json_str(s) %}{% set q = '"' %}{{ q | safe }}{{ s | replace(from='\', to='\\') | replace(from='"', to='\"') | replace(from="<", to="\\u003c") | replace(from=">", to="\\u003e") | replace(from="&", to="\\u0026") | safe }}{{ q | safe }}{% endmacro json_str %}
