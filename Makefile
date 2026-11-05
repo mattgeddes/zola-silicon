@@ -1,4 +1,4 @@
-# zola-biz — build helpers
+# zola-silicon — build helpers
 #
 # `make build` regenerates the generated files before invoking Zola. There is no
 # Zola plugin for this: Zola renders templates only when a page claims them, with
@@ -7,6 +7,13 @@
 
 ZOLA       ?= zola
 PYTHON     ?= python3
+
+# Site root and script location. A site that consumes this repository as a
+# theme overrides THEME_DIR (and possibly PYTHON) on the command line or in its
+# own Makefile, e.g.:
+#
+#     make build THEME_DIR=themes/zola-silicon
+THEME_DIR  ?= .
 
 .PHONY: all build serve check llms theme clean distclean
 
@@ -22,14 +29,14 @@ serve: llms theme
 
 ## Fail if anything generated is stale. Use in CI.
 check: llms theme
-	$(PYTHON) scripts/generate-theme-toml.py --check
-	$(PYTHON) scripts/generate-llms.py --check
+	$(PYTHON) $(THEME_DIR)/scripts/generate-theme-toml.py --check
+	$(PYTHON) $(THEME_DIR)/scripts/generate-llms.py --check
 
 llms:
-	$(PYTHON) scripts/generate-llms.py
+	$(PYTHON) $(THEME_DIR)/scripts/generate-llms.py --site-root .
 
 theme:
-	$(PYTHON) scripts/generate-theme-toml.py
+	$(PYTHON) $(THEME_DIR)/scripts/generate-theme-toml.py
 
 clean:
 	$(ZOLA) clean
