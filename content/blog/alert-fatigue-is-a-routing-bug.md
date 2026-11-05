@@ -12,11 +12,27 @@ image = "/images/posts/alert-routing.svg"
 image_alt = "Abstract illustration of six alert paths converging on a single node"
 author = "Nadia Okon"
 eyebrow = "On-call"
+mermaid = true
 +++
 
 Six pages, one fault, forty minutes. The database failed over at 02:14, which
 is exactly the sort of event an alert exists for. Everything that followed was
 our own fault.
+
+The paging graph before we changed it looked like this:
+
+{% mermaid() %}
+flowchart TD
+  F[Database failover] --> E[Error-rate alert]
+  F --> L[Latency alert]
+  F --> S[Saturation alert]
+  E --> O1[On-call engineer A]
+  L --> O2[On-call engineer B]
+  S --> O3[On-call engineer C]
+  O1 --> P[Pager storm]
+  O2 --> P
+  O3 --> P
+{% end %}
 
 ## What happened
 

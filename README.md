@@ -326,6 +326,52 @@ edit the paths; to use one:
 An unknown name falls back to the help glyph rather than rendering an empty
 box, so a typo is visible instead of silent.
 
+## Diagrams (Mermaid)
+
+Mermaid diagrams are opt-in per page. Add `mermaid = true` under `[extra]` in the
+front matter and use the `mermaid` shortcode:
+
+```markdown
+{% mermaid() %}
+flowchart TD
+  A[Start] --> B{Decision}
+  B -->|Yes| C[End]
+  B -->|No| A
+{% end %}
+```
+
+The shortcode wraps the body in `<pre class="mermaid">`, which Mermaid replaces
+with an SVG at render time. Only pages that opt in load the Mermaid module,
+so the rest of the site pays nothing.
+
+The diagrams are themed to the site palette (Secure Teal / Signal Cyan on the
+page background) and re-render automatically when the visitor toggles light/dark
+mode.
+
+### Colours used
+
+Mermaid's `theme: 'base'` with `themeVariables` pinned to the palette:
+
+- Light: primary `#137C7A` (Secure Teal), text on it `#F7F8F5` (Porcelain),
+  lines `#34414B` (Graphite), surfaces `#FFFFFF` / `#EDF0F1`.
+- Dark: primary `#39C6D6` (Signal Cyan), text on it `#12212F` (Midnight Navy),
+  lines `#AFBCC4`, surfaces `#1D2B38` / `#263441`.
+
+To change them, edit the `PALETTES` object in `base.html` (search for
+`cdn.jsdelivr.net/npm/mermaid`).
+
+### For a site consuming this theme
+
+The shortcode is inherited from the theme, so you only need the opt-in flag in
+your front matter:
+
+```toml
+[extra]
+mermaid = true
+```
+
+No other setup is required.
+
 ## llms.txt
 
 [llms.txt](https://llmstxt.org/) is a Markdown file at `/llms.txt` describing a

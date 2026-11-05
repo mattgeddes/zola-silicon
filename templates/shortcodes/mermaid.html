@@ -1,0 +1,20 @@
+{#-
+  A Mermaid diagram, rendered client-side by the Mermaid module.
+
+      {% mermaid() %}
+      graph TD
+        A[Start] --> B{Decision}
+        B -->|Yes| C[End]
+        B -->|No| A
+      {% end %}
+
+  The body is emitted verbatim inside a <pre class="mermaid">, which Mermaid
+  replaces with an SVG at render time. Write Mermaid's own syntax, not Markdown.
+
+  Requires `mermaid = true` under `[extra]` in the page's front matter; that
+  is what pulls in the Mermaid module (see base.html). Without the flag the
+  <pre> is left as plain text.
+#}
+<pre class="mermaid">
+{{ body | safe }}
+</pre>

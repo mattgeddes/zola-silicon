@@ -15,6 +15,10 @@
 {%- set_global cur_path = "/" -%}
 {%- if current_url is defined -%}{%- set_global cur_url = current_url -%}{%- endif -%}
 {%- if current_path is defined -%}{%- set_global cur_path = current_path -%}{%- endif -%}
+{#- Mermaid is opt-in per page/section: only load the module when asked. -#}
+{%- set_global MERMAID = false -%}
+{%- if page is defined and page.extra is defined and page.extra.mermaid -%}{%- set_global MERMAID = true -%}{%- endif -%}
+{%- if section is defined and section.extra is defined and section.extra.mermaid -%}{%- set_global MERMAID = true -%}{%- endif -%}
 <!doctype html>
 <html lang="{{ lang }}" class="no-js">
 <head>
@@ -129,6 +133,90 @@
 
 <script src="/js/main.js" defer></script>
 {% block scripts %}{% endblock %}
+{% if MERMAID %}
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+const PALETTES = {
+  light: {
+    primaryColor: "#137C7A",
+    primaryTextColor: "#F7F8F5",
+    primaryBorderColor: "#136668",
+    lineColor: "#34414B",
+    secondaryColor: "#D9E8E5",
+    tertiaryColor: "#EDF0F1",
+    background: "#F7F8F5",
+    mainBkg: "#FFFFFF",
+    secondBkg: "#EDF0F1",
+    tertiaryBkg: "#F0F3F6",
+    nodeBorder: "#DDE5EA",
+    clusterBkg: "#EDF0F1",
+    clusterBorder: "#DDE5EA",
+    titleColor: "#12212F",
+    edgeLabelBackground: "#FFFFFF",
+    fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif",
+  },
+  dark: {
+    primaryColor: "#39C6D6",
+    primaryTextColor: "#12212F",
+    primaryBorderColor: "#28A5AD",
+    lineColor: "#AFBCC4",
+    secondaryColor: "#183A48",
+    tertiaryColor: "#1D2B38",
+    background: "#12212F",
+    mainBkg: "#1D2B38",
+    secondBkg: "#263441",
+    tertiaryBkg: "#323F4B",
+    nodeBorder: "#2B3845",
+    clusterBkg: "#1D2B38",
+    clusterBorder: "#2B3845",
+    titleColor: "#FAFAF8",
+    edgeLabelBackground: "#1D2B38",
+    fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif",
+  },
+};
+
+function currentTheme() {
+  const d = document.documentElement;
+  if (d.dataset.theme === "dark") return "dark";
+  if (d.dataset.theme === "light") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+// Wrap each diagram in a host so we can restore its source on a re-render.
+const hosts = [];
+document.querySelectorAll("pre.mermaid").forEach((pre) => {
+  const host = document.createElement("div");
+  host.className = "mermaid-host";
+  host.dataset.mermaidSrc = pre.textContent;
+  pre.parentNode.insertBefore(host, pre);
+  host.appendChild(pre);
+  hosts.push(host);
+});
+
+function render() {
+  const t = currentTheme();
+  mermaid.initialize({ startOnLoad: false, theme: "base", themeVariables: PALETTES[t] });
+  hosts.forEach((host) => {
+    host.innerHTML = "";
+    const pre = document.createElement("pre");
+    pre.className = "mermaid";
+    pre.textContent = host.dataset.mermaidSrc;
+    host.appendChild(pre);
+  });
+  mermaid.run({ querySelector: ".mermaid" });
+}
+
+render();
+
+// Re-render when the visitor toggles the theme or the OS preference changes.
+const obs = new MutationObserver(() => render());
+obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  try { if (!localStorage.getItem("theme")) render(); } catch (e) { render(); }
+});
+</script>
+{% endif %}
 </body>
 </html>
 {% endif -%}

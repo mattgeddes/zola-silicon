@@ -2522,6 +2522,42 @@ a.badge:hover {
   }
 }
 
+
+/* -----------------------------------------------------------------------------
+   20. Mermaid diagrams
+   -------------------------------------------------------------------------- */
+.mermaid-host {
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow-x: auto;
+}
+
+.mermaid-host svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* Mermaid renders into a <pre class="mermaid"> before JS runs; keep it readable
+   as a fallback for visitors without JavaScript. */
+pre.mermaid {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--text-muted);
+  white-space: pre;
+}
+
 @media print {
   .site-header,
   .site-footer,
