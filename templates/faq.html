@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% import "partials/icons.html" as m %}
+{% import "partials/ui.html" as ui %}
+
+{#
+  Dedicated FAQ page/section. Use it for a standalone /faq/ route:
+
+      content/faq/_index.md (or content/faq.md)
+
+      +++
+      title = "Frequently asked questions"
+      template = "faq.html"
+      [extra]
+      eyebrow = "Help"
+      faq = { eyebrow = "Questions", title = "Frequently asked", items = [
+        { q = "Question text?", a = "<p>Answer HTML.</p>" },
+      ] }
+      +++
+
+  The same `ui::faq` macro as the home page is used, so the markup matches.
+#}
+
+{% block content %}
+{%- set_global IS_PAGE = page is defined and page.title -%}
+{%- set_global IS_SECTION = section is defined and section.title -%}
+{%- set_global E = "" -%}
+{%- set_global T = "" -%}
+{%- set_global D = "" -%}
+{%- if IS_PAGE -%}
+  {%- if page.extra is defined and page.extra != "" -%}{%- set_global E = page.extra -%}{%- endif -%}
+  {%- set_global T = page.title -%}
+  {%- set_global D = page.description -%}
+{%- elif IS_SECTION -%}
+  {%- if section.extra is defined and section.extra != "" -%}{%- set_global E = section.extra -%}{%- endif -%}
+  {%- set_global T = section.title -%}
+  {%- set_global D = section.description -%}
+{%- endif -%}
+
+<section class="page-hero">
+  <div class="container">
+    {%- set_global eyebrow = "" -%}
+    {%- if E.eyebrow is defined -%}{%- set_global eyebrow = E.eyebrow -%}{%- endif %}
+    {{ ui::page_h(eyebrow=eyebrow, title=T, text=D) }}
+  </div>
+</section>
+
+<div class="section">
+  <div class="container">
+    {%- if E.intro is defined %}
+    <div class="section-intro">{{ E.intro | safe }}</div>
+    {%- endif %}
+
+    {%- if E.faq is defined %}
+    {{ ui::faq(f=E.faq) }}
+    {%- else %}
+    <p class="muted">No questions yet.</p>
+    {%- endif %}
+  </div>
+</div>
+
+{%- if E.cta is defined %}{{ ui::cta_band(c=E.cta) }}{% endif %}
+{% endblock %}

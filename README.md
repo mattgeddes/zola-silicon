@@ -304,6 +304,26 @@ Note that a shortcode body is emitted verbatim: write plain text or inline HTML
 (`<strong>`, `<em>`, `<code>`), not Markdown. Avoid backticks in bodies too —
 Zola's grammar uses them for quoted argument values.
 
+## FAQ pages
+
+FAQs are data, not Markdown. Define them in front matter under `[extra.faq]`:
+
+```toml
+[extra.faq]
+eyebrow = "Questions"
+title = "Frequently asked"
+items = [
+  { q = "How long does setup take?", a = "<p>Most teams see their first baseline inside twenty minutes.</p>" },
+  { q = "Do I have to move my data?", a = "<p>No. Storage stays wherever you put it.</p>" },
+]
+```
+
+There is **no per-question shortcode** — each entry is a `{ q, a }` pair, and `a`\nis an HTML string (so you can use `<p>`, `<code>`, `<a>`, etc.).
+
+- **On the home page**, the `ui::faq` macro renders `[extra.faq]` from\n  `content/_index.md` automatically (see the sample site).\n- **On a dedicated page** at `/faq/`, create `content/faq/_index.md` (or\n  `content/faq.md`) and set `template = "faq.html"`. The template renders the\n  same `ui::faq` macro from `section.extra.faq` / `page.extra.faq`.\n- **On any other page**, render it yourself with `{{ ui::faq(f=E.faq) }}`\n  where `E` is the page's `[extra]`.
+
+The sample site keeps its FAQ on the home page and links to it with\n`url = "/#faq"` in `config.toml`. Change that to `url = "/faq/"` if you use a\nstandalone page instead.
+
 ## Icons
 
 67 icons live in `data/icons.toml` as the inner markup of a 24×24 `<svg>` that
@@ -702,6 +722,7 @@ templates/
   blog/section.html      paginated post list
   blog/page.html         a single post
   page.html              generic interior page
+  faq.html               dedicated FAQ page (see "FAQ pages")
   contact.html           contact page, details from [extra.contact]
   404.html
   partials/
