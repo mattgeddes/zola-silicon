@@ -161,6 +161,16 @@ label = "Mastodon"
 url = "https://mastodon.social/"
 
 [[extra.social]]
+icon = "bluesky"
+label = "Bluesky"
+url = "https://bsky.app/"
+
+[[extra.social]]
+icon = "x"
+label = "X"
+url = "https://x.com/"
+
+[[extra.social]]
 icon = "linkedin"
 label = "LinkedIn"
 url = "https://www.linkedin.com/"
