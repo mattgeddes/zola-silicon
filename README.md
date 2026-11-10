@@ -745,6 +745,12 @@ The sample site is a demo, not a real business. Replace:
   official brand marks for the networks you actually use.
 - The newsletter form.
 - The sample copy in every content file.
+- **Link previews.** The Open Graph / Twitter card image is `static/og.png`
+  (and `static/og.svg` is the source). Replace both with your own 1200×630
+  artwork, or set `[extra] og_image = "/path/to/your.png"` in `config.toml`.
+  Per-page previews come from `[extra] image` in a page's front matter (the
+  blog post cover image is used automatically). `title` and `description` in
+  `config.toml` drive the text.
 
 Then turn on HTML minification for production:
 
