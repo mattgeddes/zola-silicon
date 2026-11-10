@@ -324,6 +324,34 @@ There is **no per-question shortcode** — each entry is a `{ q, a }` pair, and 
 
 The sample site keeps its FAQ on the home page and links to it with\n`url = "/#faq"` in `config.toml`. Change that to `url = "/faq/"` if you use a\nstandalone page instead.
 
+## Comments (Bluesky)
+
+Comments are powered by Bluesky. Instead of a database, each post links to a\nBluesky post you publish; replies to that post are fetched client-side and\nrendered as the comment thread, and a "Reply on Bluesky" button opens the\npost so the visitor can reply.
+
+### Setup per post
+
+In the post's front matter:
+
+```toml
+[extra.bluesky]
+handle = "your.handle.bsky.social"
+post_id = "3k..."   # the last path segment of the Bluesky post URL
+```
+
+`post_id` is the rkey — the final segment of\n`https://bsky.app/profile/<handle>/post/<post_id>`.
+
+### What renders
+
+- A "Comments" section at the bottom of the post with a "Reply on Bluesky" button.
+- Top replies (sorted by like count, capped at 12) fetched from Bluesky's\n  public API (`public.api.bsky.app`), rendered as cards with avatar, handle,\n  date, text and like count. "View all N replies on Bluesky" links out when\n  there are more.
+- Re-renders automatically if the visitor toggles light/dark mode.
+
+No account, token or build step is required: the Bluesky API is public and\nCORS-enabled for reads. If the API is unreachable, the widget degrades to a\n"Could not load replies" message with a link to the post.
+
+### Sample
+
+The "Alert fatigue" post opts in and points at a real Bluesky thread so the\nwidget has something to show.
+
 ## Icons
 
 67 icons live in `data/icons.toml` as the inner markup of a 24×24 `<svg>` that
@@ -728,6 +756,7 @@ templates/
   partials/
     header.html  footer.html  logo.html
     icons.html    icons + buttons
+    bluesky.html  Bluesky comment widget
     ui.html       cards, entries, FAQ, newsletter, CTA band
     heads.html    headings + pagination
     actions.html  front-matter-driven buttons

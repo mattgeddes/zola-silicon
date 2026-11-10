@@ -13,6 +13,10 @@ image_alt = "Abstract illustration of six alert paths converging on a single nod
 author = "Nadia Okon"
 eyebrow = "On-call"
 mermaid = true
+
+[extra.bluesky]
+handle = "bsky.app"
+post_id = "3mznvxo7so22q"
 +++
 
 Six pages, one fault, forty minutes. The database failed over at 02:14, which

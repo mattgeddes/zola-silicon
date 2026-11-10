@@ -1,0 +1,114 @@
+{#-
+  Bluesky-based comments for a blog post. Rendered only when the page declares
+  [extra.bluesky] with `handle` and `post_id` (see README "Comments (Bluesky)").
+
+  Top replies are fetched client-side from the public Bluesky API and rendered
+  here; a "Reply on Bluesky" link opens the post so the visitor can reply.
+#}
+
+{%- set_global BS_HANDLE = "" -%}
+{%- set_global BS_POST = "" -%}
+{%- if page.extra is defined and page.extra.bluesky is defined -%}
+  {%- if page.extra.bluesky.handle is defined -%}{%- set_global BS_HANDLE = page.extra.bluesky.handle -%}{%- endif -%}
+  {%- if page.extra.bluesky.post_id is defined -%}{%- set_global BS_POST = page.extra.bluesky.post_id -%}{%- endif -%}
+{%- endif -%}
+
+{% if BS_HANDLE != "" and BS_POST != "" %}
+<section class="section bsky-comments" id="comments" aria-labelledby="comments-title">
+  <div class="container">
+    <h2 class="section__title" id="comments-title">Comments</h2>
+    <p class="subtle bsky-comments__intro">
+      Powered by <a href="https://bsky.app" target="_blank" rel="noopener">Bluesky</a>.
+      <a id="bsky-reply-link" class="btn btn--secondary btn--sm" target="_blank" rel="noopener">Reply on Bluesky</a>
+    </p>
+    <div id="bsky-thread" class="bsky-thread" data-handle="{{ BS_HANDLE }}" data-post="{{ BS_POST }}">
+      <p class="muted" id="bsky-status">Loading replies…</p>
+    </div>
+  </div>
+</section>
+
+<script type="module">
+const host = document.getElementById("bsky-thread");
+const handle = host.dataset.handle;
+const postId = host.dataset.post;
+const uri = "at://" + handle + "/app.bsky.feed.post/" + postId;
+const replyUrl = "https://bsky.app/profile/" + handle + "/post/" + postId;
+const replyLink = document.getElementById("bsky-reply-link");
+if (replyLink) replyLink.href = replyUrl;
+
+const status = document.getElementById("bsky-status");
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function renderReplies(replies) {
+  const flat = [];
+  function walk(node, depth) {
+    if (!node || !node.post) return;
+    if (depth > 0) flat.push({ post: node.post, depth: depth });
+    (node.replies || []).forEach((r) => walk(r, depth + 1));
+  }
+  (replies || []).forEach((r) => walk(r, 1));
+
+  // Top replies first: sort by like count, then recency.
+  flat.sort((a, b) => {
+    const la = (a.post.likeCount || 0);
+    const lb = (b.post.likeCount || 0);
+    if (lb !== la) return lb - la;
+    return new Date(b.post.record?.createdAt || 0) - new Date(a.post.record?.createdAt || 0);
+  });
+
+  const shown = flat.slice(0, 12);
+  if (shown.length === 0) {
+    host.innerHTML = '<p class="muted">No replies yet. Be the first to reply on Bluesky.</p>';
+    return;
+  }
+
+  host.innerHTML = shown.map((item) => {
+    const p = item.post;
+    const a = p.author || {};
+    const r = p.record || {};
+    const text = escapeHtml(r.text || "").replace(/\n/g, "<br>");
+    const date = r.createdAt ? new Date(r.createdAt).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
+    const avatar = a.avatar ? '<img src="' + a.avatar + '" alt="" class="bsky-reply__avatar" loading="lazy" width="32" height="32">' : '';
+    const h = a.handle || a.did || "";
+    const likes = p.likeCount || 0;
+    const rkey = (p.uri || "").split("/").pop();
+    const viewUrl = "https://bsky.app/profile/" + h + "/post/" + rkey;
+    const indent = item.depth > 1 ? " bsky-reply--nested" : "";
+    return '<article class="bsky-reply' + indent + '">' +
+      '<header class="bsky-reply__head">' +
+        avatar +
+        '<a href="https://bsky.app/profile/' + h + '" target="_blank" rel="noopener" class="bsky-reply__author">@' + escapeHtml(h) + '</a>' +
+        (date ? '<time class="bsky-reply__date">' + date + '</time>' : '') +
+      '</header>' +
+      '<p class="bsky-reply__text">' + text + '</p>' +
+      '<footer class="bsky-reply__foot">' +
+        '<span class="bsky-reply__likes">' + likes + ' like' + (likes === 1 ? '' : 's') + '</span>' +
+        '<a href="' + viewUrl + '" target="_blank" rel="noopener">View on Bluesky</a>' +
+      '</footer>' +
+    '</article>';
+  }).join("");
+
+  if (flat.length > shown.length) {
+    host.insertAdjacentHTML("beforeend",
+      '<p class="muted bsky-reply__more"><a href="' + replyUrl + '" target="_blank" rel="noopener">View all ' + flat.length + ' replies on Bluesky →</a></p>');
+  }
+}
+
+async function load() {
+  try {
+    const res = await fetch("https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=" + encodeURIComponent(uri) + "&depth=6");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.message || data.error);
+    renderReplies(data.thread ? data.thread.replies : []);
+  } catch (e) {
+    host.innerHTML = '<p class="muted">Could not load replies (' + escapeHtml(e.message) + '). <a href="' + replyUrl + '" target="_blank" rel="noopener">View on Bluesky</a>.</p>';
+  }
+}
+
+load();
+</script>
+{% endif %}
