@@ -2651,6 +2651,87 @@ pre.mermaid {
   margin-top: 0.5rem;
 }
 
+
+/* -----------------------------------------------------------------------------
+   22. Contact form
+   -------------------------------------------------------------------------- */
+.contact-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.form-field label {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  font-size: var(--step-0);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 8rem;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.form-field__hint {
+  margin: 0;
+  font-size: var(--step--2);
+  color: var(--text-subtle);
+}
+
+.form-honeypot {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form-status {
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+  min-height: 1.25rem;
+}
+
+.form-status:empty {
+  display: none;
+}
+
+/* Turnstile widget container */
+.cf-turnstile {
+  margin-block: 0.25rem;
+}
+
 @media print {
   .site-header,
   .site-footer,

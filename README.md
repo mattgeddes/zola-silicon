@@ -655,6 +655,28 @@ curl -s https://yoursite.example.com/blog/a-post/ | grep -A40 'application/ld+js
 
 Or paste a URL into Google's Rich Results Test.
 
+## Contact forms
+
+The contact page can render a real form instead of a `mailto:` link. Set
+`form_action` in `[extra.contact]`:
+
+```toml
+[extra.contact]
+email = "hello@yoursite.example.com"
+form_action = "https://forms.yoursite.example.com/submit"
+turnstile_site_key = ""   # optional Cloudflare Turnstile site key
+```
+
+Leave `form_action` empty (the default) and the page falls back to the email
+button, so a site with no backend keeps working.
+
+The form posts `email`, `subject`, `message`, plus a honeypot (`_gotcha`) and a
+render timestamp (`_t`). The template handles submission via `fetch` and shows\na status message; without JavaScript it falls back to a normal POST.
+
+### Backend
+
+Any endpoint that accepts a POST and sends email works: Formspree, Web3Forms,\nFormspark, a self-hosted **n8n** workflow, or a tiny service of your own. The\nrepository ships a reference implementation in `ssg-mailer/` (Go, standard\nlibrary only): honeypot + time check + optional Turnstile + SMTP. See its\nREADME for configuration and deployment behind nginx.
+
 ## Graphics
 
 All artwork was drawn for this template and is released **CC0** (public

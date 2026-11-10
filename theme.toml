@@ -123,6 +123,12 @@ phone = "+1 (415) 555-0142"
 address = "Studio 4, Pier 9\\nSan Francisco, CA 94111"
 hours = "Mon–Fri, 09:00–18:00 PT"
 
+# Optional contact form. Leave form_action empty to fall back to a mailto:
+# link (no third-party or self-hosted endpoint needed). When set, the contact
+# page renders a form that POSTs here; see README "Contact forms".
+# form_action = "https://forms.yoursite.example.com/submit"
+# turnstile_site_key = ""   # Cloudflare Turnstile site key (optional)
+
 # -----------------------------------------------------------------------------
 # Footer link columns
 # -----------------------------------------------------------------------------
