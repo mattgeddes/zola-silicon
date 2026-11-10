@@ -15,25 +15,29 @@ PYTHON     ?= python3
 #     make build THEME_DIR=themes/zola-silicon
 THEME_DIR  ?= .
 
-.PHONY: all build serve check llms theme clean distclean
+.PHONY: all build serve check llms og theme clean distclean
 
 all: build
 
 ## Regenerate the generated files, then build.
-build: llms theme
+build: llms og theme
 	$(ZOLA) build
 
 ## Regenerate the generated files, then serve with live reload.
-serve: llms theme
+serve: llms og theme
 	$(ZOLA) serve
 
 ## Fail if anything generated is stale. Use in CI.
-check: llms theme
+check: llms og theme
 	$(PYTHON) $(THEME_DIR)/scripts/generate-theme-toml.py --check
 	$(PYTHON) $(THEME_DIR)/scripts/generate-llms.py --check
+	$(PYTHON) $(THEME_DIR)/scripts/generate-og.py --check
 
 llms:
 	$(PYTHON) $(THEME_DIR)/scripts/generate-llms.py --site-root .
+
+og:
+	$(PYTHON) $(THEME_DIR)/scripts/generate-og.py --site-root .
 
 theme:
 	$(PYTHON) $(THEME_DIR)/scripts/generate-theme-toml.py
@@ -41,6 +45,7 @@ theme:
 clean:
 	$(ZOLA) clean
 	rm -f static/llms.txt static/llms-full.txt
+	rm -rf static/og
 
 distclean: clean
 	rm -rf public .zola-cache

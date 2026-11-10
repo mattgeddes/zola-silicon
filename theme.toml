@@ -33,6 +33,11 @@ version = "0.9.0"
 # [extra] image in front matter.
 # og_image = "/og.png"
 
+# Set to "generated" to use per-page OG images produced by
+# scripts/generate-og.py (written to static/og/). Leave unset to use the
+# static og.png for every page.
+og_images = "generated"
+
 # Where the icon library is loaded from, relative to the site root. See the
 # "Using this template as a Zola theme" section of the README: when your site
 # consumes this repo as a theme, Zola does not search the theme's data/

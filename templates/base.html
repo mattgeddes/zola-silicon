@@ -24,6 +24,31 @@
 {%- set_global OG_IMAGE = "/og.png" -%}
 {%- if config.extra.og_image is defined and config.extra.og_image != "" -%}{%- set_global OG_IMAGE = config.extra.og_image -%}{%- endif -%}
 {%- if page is defined and page.extra is defined and page.extra.image is defined and page.extra.image != "" -%}{%- set_global OG_IMAGE = page.extra.image -%}{%- endif -%}
+{%- if page is defined and page.extra is defined and page.extra.og_image is defined and page.extra.og_image != "" -%}{%- set_global OG_IMAGE = page.extra.og_image -%}{%- endif -%}
+{#- Per-page generated images (from scripts/generate-og.py), opt-in. -#}
+{%- set_global _USE_GEN = false -%}
+{%- if config.extra.og_images is defined -%}
+  {%- if config.extra.og_images == "generated" -%}
+    {%- if page is defined -%}
+      {%- if page.relative_path is defined -%}
+        {%- set_global _USE_GEN = true -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+{%- if _USE_GEN -%}
+  {%- set_global _rp = page.relative_path | replace(from=".md", to=".png") -%}
+  {%- set_global _rp = _rp | replace(from="_index.png", to="index.png") -%}
+  {%- set_global _override = false -%}
+  {%- if page.extra is defined and page.extra != "" -%}
+    {%- if page.extra.og_image is defined and page.extra.og_image != "" -%}{%- set_global _override = true -%}{%- endif -%}
+    {%- if page.extra.image is defined and page.extra.image != "" -%}{%- set_global _override = true -%}{%- endif -%}
+  {%- endif -%}
+  {%- if config.extra.og_image is defined and config.extra.og_image != "" -%}{%- set_global _override = true -%}{%- endif -%}
+  {%- if not _override -%}
+    {%- set_global OG_IMAGE = "/og/" ~ _rp -%}
+  {%- endif -%}
+{%- endif -%}
 <!doctype html>
 <html lang="{{ lang }}" class="no-js">
 <head>
