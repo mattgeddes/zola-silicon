@@ -25,7 +25,7 @@
 # same.
 [extra]
 # Shown in the footer. Bump alongside the git tag and CHANGELOG.md.
-version = "0.8.0"
+version = "0.8.5"
 
 # Where the icon library is loaded from, relative to the site root. See the
 # "Using this template as a Zola theme" section of the README: when your site
