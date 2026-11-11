@@ -71,6 +71,7 @@
 <link rel="canonical" href="{{ cur_url | safe }}">
 {{ schema::organisation() }}
 {{ schema::webpage() }}
+{{ schema::breadcrumb() }}
 {% if cur_path == "/" %}{{ schema::website() }}{% endif %}
 {% block extra_jsonld %}{% endblock %}
 

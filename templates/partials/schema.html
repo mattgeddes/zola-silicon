@@ -183,3 +183,84 @@
 }
 </script>
 {% endmacro webpage %}
+
+{% macro faqpage(f) %}
+{%- if f is defined and f.items is defined -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+{%- set_global _sep = "" -%}
+{%- for q in f.items -%}
+    {{ _sep }}{
+      "@type": "Question",
+      "name": {{ j::json_str(s=q.q) }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ j::json_str(s=q.a) }}
+      }
+    }{%- set_global _sep = "," -%}
+{%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+{% endmacro faqpage %}
+
+{% macro breadcrumb() %}
+{%- set_global _anc = [] -%}
+{%- set_global _cur_title = "" -%}
+{%- set_global _cur_url = "" -%}
+{%- set_global _is_home = false -%}
+{%- if page is defined and page.title is defined -%}
+  {%- set_global _cur_title = page.title -%}
+  {%- set_global _cur_url = page.permalink -%}
+  {%- if page.ancestors is defined -%}{%- set_global _anc = page.ancestors -%}{%- endif -%}
+{%- elif section is defined and section.title is defined -%}
+  {%- set_global _cur_title = section.title -%}
+  {%- set_global _cur_url = section.permalink -%}
+  {%- if section.ancestors is defined -%}{%- set_global _anc = section.ancestors -%}{%- endif -%}
+{%- endif -%}
+{%- if _cur_url == config.base_url or _cur_url == config.base_url ~ "/" -%}{%- set_global _is_home = true -%}{%- endif -%}
+
+{%- if not _is_home -%}
+{%- set_global _items = "" -%}
+{%- set_global _pos = 0 -%}
+{%- set_global _sep = "" -%}
+{#- ancestors (skip the root _index.md? no — include as Home) -#}
+{%- for a in _anc -%}
+  {%- set_global _pos = _pos + 1 -%}
+  {%- if a == "_index.md" -%}
+    {%- set_global _name = config.title -%}
+    {%- set_global _url = config.base_url -%}
+    {%- set_global _jn = j::json_str(s=_name) -%}
+    {%- set_global _ju = j::json_str(s=_url) -%}
+  {%- else -%}
+    {%- set_global _sec = get_section(path=a) -%}
+    {%- set_global _name = _sec.title -%}
+    {%- set_global _url = _sec.permalink -%}
+  {%- endif -%}
+  {%- set_global _jn = j::json_str(s=_name) -%}
+  {%- set_global _ju = j::json_str(s=_url) -%}
+  {%- set_global _items = _items ~ _sep ~ '{"@type":"ListItem","position":' ~ _pos ~ ',"name":' ~ _jn ~ ',"item":' ~ _ju ~ '}' -%}
+  {%- set_global _sep = "," -%}
+{%- endfor -%}
+{#- current page -#}
+{%- if _cur_title != "" -%}
+  {%- set_global _pos = _pos + 1 -%}
+  {%- set_global _jcn = j::json_str(s=_cur_title) -%}
+  {%- set_global _jcu = j::json_str(s=_cur_url) -%}
+  {%- set_global _items = _items ~ _sep ~ '{"@type":"ListItem","position":' ~ _pos ~ ',"name":' ~ _jcn ~ ',"item":' ~ _jcu ~ '}' -%}
+{%- endif -%}
+{%- if _pos > 1 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{{ _items | safe }}]
+}
+</script>
+{%- endif -%}
+{%- endif -%}
+{% endmacro breadcrumb %}

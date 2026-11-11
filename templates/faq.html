@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% import "partials/icons.html" as m %}
 {% import "partials/ui.html" as ui %}
+{% import "partials/schema.html" as schema %}
 
 {#
   Dedicated FAQ page/section. Use it for a standalone /faq/ route:
@@ -19,6 +20,12 @@
 
   The same `ui::faq` macro as the home page is used, so the markup matches.
 #}
+
+{% block extra_jsonld %}
+{%- set_global _E = "" -%}
+{%- if page is defined and page.extra is defined and page.extra != "" -%}{%- set_global _E = page.extra -%}{%- elif section is defined and section.extra is defined and section.extra != "" -%}{%- set_global _E = section.extra -%}{%- endif -%}
+{%- if _E != "" and _E.faq is defined -%}{{ schema::faqpage(f=_E.faq) }}{%- endif -%}
+{% endblock %}
 
 {% block content %}
 {%- set_global IS_PAGE = page is defined and page.title -%}
