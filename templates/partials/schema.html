@@ -24,16 +24,7 @@
 {%- else -%}
 {%- set_global LOGO_URL = config.base_url ~ LOGO -%}
 {%- endif -%}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": {{ j::json_str(s=NAME) }},
-  "url": {{ j::json_str(s=config.base_url) }},
-  "logo": {{ j::json_str(s=LOGO_URL) }}
-{% if config.description %},
-  "description": {{ j::json_str(s=config.description) }}
-{% endif %}
+{#- sameAs: from [extra.organisation] if provided, else external social links -#}
 {%- set_global SAME_BODY = "" -%}
 {%- set_global SAME_SEP = "" -%}
 {%- if config.extra.organisation is defined and config.extra.organisation.same_as is defined -%}
@@ -53,26 +44,32 @@
   {%- endif -%}
   {%- endfor -%}
 {%- endif -%}
-{%- if SAME_BODY != "" %},
-  "sameAs": [{{ SAME_BODY | safe }}]
-{% endif %}
+{#- contact point -#}
 {%- set_global HAS_CONTACT = false -%}
 {%- if config.extra.contact is defined -%}
   {%- if config.extra.contact.email is defined and config.extra.contact.email != "" -%}{%- set_global HAS_CONTACT = true -%}{%- endif -%}
   {%- if config.extra.contact.phone is defined and config.extra.contact.phone != "" -%}{%- set_global HAS_CONTACT = true -%}{%- endif -%}
 {%- endif -%}
-{%- if HAS_CONTACT -%},
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ j::json_str(s=NAME) }},
+  "url": {{ j::json_str(s=config.base_url) }},
+  "logo": {{ j::json_str(s=LOGO_URL) }}{% if config.description or SAME_BODY != "" or HAS_CONTACT %},{% endif %}
+{%- if config.description -%}
+  "description": {{ j::json_str(s=config.description) }}{% if SAME_BODY != "" or HAS_CONTACT %},{% endif %}
+{%- endif -%}
+{%- if SAME_BODY != "" -%}
+  "sameAs": [{{ SAME_BODY | safe }}]{% if HAS_CONTACT %},{% endif %}
+{%- endif -%}
+{%- if HAS_CONTACT -%}
   "contactPoint": {
     "@type": "ContactPoint",
-    "contactType": "customer service"
-    {%- if config.extra.contact is defined and config.extra.contact.email is defined and config.extra.contact.email != "" %},
-    "email": {{ j::json_str(s=config.extra.contact.email) }}
-    {%- endif %}
-    {%- if config.extra.contact is defined and config.extra.contact.phone is defined and config.extra.contact.phone != "" %},
-    "telephone": {{ j::json_str(s=config.extra.contact.phone) }}
-    {%- endif %}
-  }
-{%- endif %}
+    "contactType": "customer service"{% if config.extra.contact is defined and config.extra.contact.email is defined and config.extra.contact.email != "" %},
+    "email": {{ j::json_str(s=config.extra.contact.email) }}{% endif %}{% if config.extra.contact is defined and config.extra.contact.phone is defined and config.extra.contact.phone != "" %},
+    "telephone": {{ j::json_str(s=config.extra.contact.phone) }}{% endif %}
+  }{%- endif %}
 }
 </script>
 {% endmacro organisation %}
@@ -122,10 +119,8 @@
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": {{ j::json_str(s=TITLE) }},
-{% if DESC != "" %}
-  "description": {{ j::json_str(s=DESC) }},
-{% endif %}
+  "headline": {{ j::json_str(s=TITLE) }},{% if DESC != "" %}
+  "description": {{ j::json_str(s=DESC) }},{% endif %}
   "url": {{ j::json_str(s=URL) }},
   "datePublished": {{ j::json_str(s=DATE) }},
   "dateModified": {{ j::json_str(s=MODIFIED) }},
@@ -145,10 +140,46 @@
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": {{ j::json_str(s=URL) }}
-  }
-{% if KEYWORDS != "" %}
-  ,"keywords": {{ j::json_str(s=KEYWORDS) }}
-{% endif %}
+  }{% if KEYWORDS != "" %},
+  "keywords": {{ j::json_str(s=KEYWORDS) }}{% endif %}
 }
 </script>
 {% endmacro article %}
+
+{% macro website() %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ j::json_str(s=config.title) }},
+  "url": {{ j::json_str(s=config.base_url) }}{% if config.description %},
+  "description": {{ j::json_str(s=config.description) }}{% endif %}
+}
+</script>
+{% endmacro website %}
+
+{% macro webpage() %}
+{%- set_global WP_TITLE = config.title -%}
+{%- if page is defined and page.title -%}{%- set_global WP_TITLE = page.title -%}{%- endif -%}
+{%- if section is defined and section.title -%}{%- set_global WP_TITLE = section.title -%}{%- endif -%}
+{%- set_global WP_DESC = config.description -%}
+{%- if page is defined and page.description -%}{%- set_global WP_DESC = page.description -%}{%- endif -%}
+{%- if section is defined and section.description -%}{%- set_global WP_DESC = section.description -%}{%- endif -%}
+{%- set_global WP_URL = config.base_url -%}
+{%- if page is defined and page.permalink is defined -%}{%- set_global WP_URL = page.permalink -%}{%- endif -%}
+{%- if section is defined and section.permalink is defined -%}{%- set_global WP_URL = section.permalink -%}{%- endif -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": {{ j::json_str(s=WP_TITLE) }}{% if WP_DESC %},
+  "description": {{ j::json_str(s=WP_DESC) }}{% endif %},
+  "url": {{ j::json_str(s=WP_URL) }},
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": {{ j::json_str(s=config.title) }},
+    "url": {{ j::json_str(s=config.base_url) }}
+  }
+}
+</script>
+{% endmacro webpage %}

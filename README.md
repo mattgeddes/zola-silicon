@@ -588,11 +588,15 @@ it worse.
 
 ## Structured data (JSON-LD)
 
-Two blocks are emitted automatically, both assembled from config, `[extra]` and
+Four blocks are emitted automatically, all assembled from config, `[extra]` and
 front matter, so there is nothing to keep in sync with the template:
 
 - **`Organization`** on every page, from `[extra.brand]`, `config.description`,
   `[extra.contact]` and `[[extra.social]]`.
+- **`WebSite`** on the home page, from `title` and `description` in
+  `config.toml`.
+- **`WebPage`** on every page, with `name`, `description`, `url` and an
+  `isPartOf` reference to the `WebSite`.
 - **`Article`** on every post in `content/blog/`, from the post's front matter
   and the organisation block above.
 

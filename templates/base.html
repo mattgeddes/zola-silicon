@@ -70,6 +70,8 @@
 {% endif %}
 <link rel="canonical" href="{{ cur_url | safe }}">
 {{ schema::organisation() }}
+{{ schema::webpage() }}
+{% if cur_path == "/" %}{{ schema::website() }}{% endif %}
 {% block extra_jsonld %}{% endblock %}
 
 {% block og %}
@@ -93,6 +95,8 @@
 <meta name="theme-color" content="#f7f8f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12212f" media="(prefers-color-scheme: dark)">
 <meta name="generator" content="Zola">
+<meta name="robots" content="index, follow">
+<meta name="author" content="{{ config.extra.brand.name }}">
 
 {#-
   Theme bootstrap. Inline and run before first paint so a visitor who has
