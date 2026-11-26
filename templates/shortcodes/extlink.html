@@ -10,6 +10,8 @@
   Optional:
     icon  — name from data/icons.toml (renders an inline SVG)
     image — URL of an external logo (renders an <img>); takes precedence over icon
+    color — "theme" (default, monochrome SVGs inherit the foreground colour)
+            or "original" (keep the SVG's own colours via <img>)
     variant — "primary" | "secondary" | "ghost" (default: "secondary")
 #}
 {%- set_global URL = url -%}
@@ -20,9 +22,13 @@
 {%- if icon is defined -%}{%- set_global ICON = icon -%}{%- endif -%}
 {%- set_global IMAGE = "" -%}
 {%- if image is defined -%}{%- set_global IMAGE = image -%}{%- endif -%}
+{%- set_global COLOR = "theme" -%}
+{%- if color is defined -%}{%- set_global COLOR = color -%}{%- endif -%}
 <a class="extlink extlink--{{ VARIANT }}" href="{{ URL | safe }}" target="_blank" rel="noopener">
-  {%- if IMAGE != "" %}
+  {%- if IMAGE != "" and COLOR == "original" %}
   <img class="extlink__logo" src="{{ IMAGE | safe }}" alt="" width="20" height="20" loading="lazy" decoding="async">
+  {%- elif IMAGE != "" %}
+  <span class="extlink__logo" style="--extlink-logo: url('{{ IMAGE | safe }}')" aria-hidden="true"></span>
   {%- elif ICON != "" %}
   {{ m::icon(name=ICON, size=20) }}
   {%- endif %}

@@ -313,6 +313,11 @@ External link with a logo (for project pages, package registries, stores):
 (a name from `data/icons.toml`). `variant` is `primary` | `secondary` (default)
 | `ghost`.
 
+By default, external logos are rendered as a CSS mask so monochrome SVGs
+inherit the theme's foreground colour (works for the devicons "original"
+variants, which are single-colour). Pass `color="original"` to keep the SVG's
+own colours via an `<img>` tag instead.
+
 ```
 
 Note that a shortcode body is emitted verbatim: write plain text or inline HTML
