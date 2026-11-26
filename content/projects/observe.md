@@ -7,7 +7,7 @@ icon = "chart"
 price = "From $0"
 cta_label = "Start a 30-day trial"
 facts = ["Traces", "Metrics", "Service maps", "OpenTelemetry"]
-eyebrow = "Product 01"
+eyebrow = "Project 01"
 +++
 
 Kestrel Observe is the part most teams adopt first. It reads your repository,

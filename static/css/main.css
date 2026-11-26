@@ -1136,7 +1136,7 @@ a.badge:hover {
 }
 
 /* -----------------------------------------------------------------------------
-   14. Feature / product cards
+   14. Feature / project cards
    -------------------------------------------------------------------------- */
 .card {
   position: relative;
@@ -2121,7 +2121,7 @@ a.badge:hover {
 }
 
 /* -----------------------------------------------------------------------------
-   22. Section listings (products / services)
+   22. Section listings (projects / services)
    -------------------------------------------------------------------------- */
 .entry-list {
   display: grid;
@@ -2199,7 +2199,7 @@ a.badge:hover {
   max-width: 58ch;
 }
 
-/* Price / meta strip on product entries */
+/* Price / meta strip on project entries */
 .entry__facts {
   display: flex;
   flex-wrap: wrap;

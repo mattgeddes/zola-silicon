@@ -10,7 +10,7 @@ before you strip it out.
 - Sleek, modern design system in plain CSS — no build step, no framework
 - Light and dark themes, both first-class, with a system-preference default
 - Responsive from 360px phones to ultrawide desktops
-- Four optional sections — **Products, Services, Blog, Contact** — each with a
+- Four optional sections — **Projects, Services, Blog, Contact** — each with a
   single on/off switch
 - A landing page that is entirely driven by front matter, so you can redesign
   it without touching a template
@@ -43,7 +43,7 @@ sections are controlled here:
 
 ```toml
 [extra.sections]
-products = true
+projects = true
 services = true
 blog = true
 contact = true
@@ -62,7 +62,7 @@ rendering decision rather than a deletion. If you want the content gone from
 the repository as well, delete its folder under `content/`.
 
 One thing the switch does *not* do: rewrite links you wrote in your own copy.
-The sample home page has buttons and feature cards pointing at `/products/` and
+The sample home page has buttons and feature cards pointing at `/projects/` and
 `/contact/`; grep your content for the section name after switching one off.
 
 ### Navigation
@@ -73,9 +73,9 @@ is always shown, which is how the `#faq` anchor link stays put.
 
 ```toml
 [[extra.nav]]
-key = "products"     # must match a key in [extra.sections]
+key = "projects"     # must match a key in [extra.sections]
 label = "Products"
-url = "/products/"
+url = "/projects/"
 ```
 
 ## Using this template as a Zola theme
@@ -173,7 +173,7 @@ The theme's `static/` is served and its `templates/` are used. Its
 they are safe to leave in place as reference.
 
 The default `[[extra.footer_links]]` point at the sample site's pages
-(`/privacy/`, `/terms/`, `/products/`). Until you override that list those links
+(`/privacy/`, `/terms/`, `/projects/`). Until you override that list those links
 will 404, so replace it early:
 
 ```toml
@@ -241,7 +241,7 @@ it is silently dropped:
 title = "Kestrel Relay"
 description = "One line used for the card, the <meta> tag and the social card."
 weight = 2
-template = "products/page.html"   # optional; see below
+template = "projects/page.html"   # optional; see below
 
 [extra]
 icon = "bolt"
@@ -771,14 +771,14 @@ scripts/
   generate-theme-toml.py regenerates theme.toml; --check fails if stale
 content/
   _index.md              the home page, as data
-  products/  services/  blog/
+  projects/  services/  blog/
   contact.md  privacy.md  terms.md
 data/
   icons.toml             the icon library
 templates/
   base.html              document shell, <head>, and the section gate
   index.html             home page blocks
-  section.html           generic listing (products, services)
+  section.html           generic listing (projects, services)
   blog/section.html      paginated post list
   blog/page.html         a single post
   page.html              generic interior page

@@ -204,7 +204,7 @@ def main() -> int:
     missing = []
     for path, fm, slug in pages:
         out_rel = slug_for(path, CONTENT)
-        out_path = OUT_DIR / out_rel  # static/og/...png
+        out_path = OUT_DIR / OG_DIRNAME / out_rel  # static/og/...png
         expected.add(out_path)
         title = fm.get("title") or site_title
         description = fm.get("description", "")

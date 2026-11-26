@@ -37,11 +37,11 @@ items = [
 [extra.features]
 eyebrow = "What you get"
 title = "Everything the platform team would have built"
-text = "Four products, one shared event pipeline, and no per-seat pricing that punishes you for growing."
+text = "Four projects, one shared event pipeline, and no per-seat pricing that punishes you for growing."
 items = [
-  { icon = "chart", title = "Traces you can read", text = "Automatic service maps, waterfall views and tail-latency breakdowns that survive a high-cardinality week.", link = "/products/observe/", link_text = "Explore Kestrel Observe" },
-  { icon = "bolt", title = "Alerts with a memory", text = "Deduplicated, grouped by cause, and quiet by default. If two symptoms share a root cause, you get one page.", link = "/products/relay/", link_text = "Explore Kestrel Relay" },
-  { icon = "lock", title = "Secrets at the edge", text = "Short-lived credentials, audited access and rotation policies that do not require a restart.", link = "/products/vault/", link_text = "Explore Kestrel Vault" },
+  { icon = "chart", title = "Traces you can read", text = "Automatic service maps, waterfall views and tail-latency breakdowns that survive a high-cardinality week.", link = "/projects/observe/", link_text = "Explore Kestrel Observe" },
+  { icon = "bolt", title = "Alerts with a memory", text = "Deduplicated, grouped by cause, and quiet by default. If two symptoms share a root cause, you get one page.", link = "/projects/relay/", link_text = "Explore Kestrel Relay" },
+  { icon = "lock", title = "Secrets at the edge", text = "Short-lived credentials, audited access and rotation policies that do not require a restart.", link = "/projects/vault/", link_text = "Explore Kestrel Vault" },
   { icon = "network", title = "One event pipeline", text = "Logs, metrics and traces share a schema, so a join is a thought rather than a migration project." },
   { icon = "gauge", title = "Cost ceilings", text = "Per-service budgets enforced at the collector. Overspend stops the pipeline instead of the finance meeting." },
   { icon = "git-branch", title = "Deploy-aware alerts", text = "Kestrel reads your release events and suppresses the noise that always follows a deploy." },
@@ -71,7 +71,7 @@ items = [
   { text = "Export to OpenTelemetry at any time. Leaving is a config change, not a migration." },
 ]
 actions = [
-  { label = "Compare the products", url = "/products/", variant = "secondary", icon = "layers" },
+  { label = "Compare the projects", url = "/projects/", variant = "secondary", icon = "layers" },
   { label = "Talk to us", url = "/contact/", variant = "ghost", icon = "message" },
 ]
 
@@ -103,6 +103,6 @@ title = "Ready to see it on your own code?"
 text = "Bring one service. We will instrument it, show you the dashboard, and tell you honestly if Kestrel is the wrong tool."
 actions = [
   { label = "Book a demo", url = "/contact/", variant = "primary", icon = "calendar" },
-  { label = "Read the docs", url = "/products/", variant = "secondary", icon = "book" },
+  { label = "Read the docs", url = "/projects/", variant = "secondary", icon = "book" },
 ]
 +++

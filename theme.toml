@@ -25,7 +25,7 @@
 # same.
 [extra]
 # Shown in the footer. Bump alongside the git tag and CHANGELOG.md.
-version = "0.9.0"
+version = "0.9.2"
 
 # Open Graph / Twitter preview image, relative to the site root. Defaults to
 # /og.png (the sample artwork). Replace static/og.png and static/og.svg with
@@ -52,7 +52,7 @@ latest_posts = 3
 copyright_year = 2026
 
 [extra.sections]
-products = true
+projects = true
 services = true
 blog = true
 contact = true
@@ -65,9 +65,9 @@ contact = true
 # the nav is a single edit in either table.
 # -----------------------------------------------------------------------------
 [[extra.nav]]
-key = "products"
-label = "Products"
-url = "/products/"
+key = "projects"
+label = "Projects"
+url = "/projects/"
 
 [[extra.nav]]
 key = "services"
@@ -144,9 +144,9 @@ hours = "Mon–Fri, 09:00–18:00 PT"
 # Footer link columns
 # -----------------------------------------------------------------------------
 [[extra.footer_links]]
-heading = "Product"
+heading = "Project"
 links = [
-  { label = "Overview", url = "/products/" },
+  { label = "Overview", url = "/projects/" },
   { label = "Contact", url = "/contact/" },
 ]
 

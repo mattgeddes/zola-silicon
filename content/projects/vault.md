@@ -7,7 +7,7 @@ icon = "lock"
 price = "From $19/mo"
 cta_label = "Start a 30-day trial"
 facts = ["Short-lived tokens", "Audit log", "Automatic rotation", "Edge runtimes"]
-eyebrow = "Product 03"
+eyebrow = "Project 03"
 +++
 
 Vault issues credentials that expire in minutes rather than months, and keeps

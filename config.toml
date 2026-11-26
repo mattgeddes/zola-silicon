@@ -72,7 +72,7 @@ feed_limit = 20
 # turning things on and off.
 #
 # Note that this only hides a section from the site's own navigation. Links you
-# write *inside* page content (a "Read more" button pointing at /products/,
+# write *inside* page content (a "Read more" button pointing at /projects/,
 # say) are yours to remove — grep your content folder for the section name
 # after switching one off.
 # -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ latest_posts = 3
 copyright_year = 2026
 
 [extra.sections]
-products = true
+projects = true
 services = true
 blog = true
 contact = true
@@ -118,9 +118,9 @@ contact = true
 # the nav is a single edit in either table.
 # -----------------------------------------------------------------------------
 [[extra.nav]]
-key = "products"
-label = "Products"
-url = "/products/"
+key = "projects"
+label = "Projects"
+url = "/projects/"
 
 [[extra.nav]]
 key = "services"
@@ -197,9 +197,9 @@ hours = "Mon–Fri, 09:00–18:00 PT"
 # Footer link columns
 # -----------------------------------------------------------------------------
 [[extra.footer_links]]
-heading = "Product"
+heading = "Project"
 links = [
-  { label = "Overview", url = "/products/" },
+  { label = "Overview", url = "/projects/" },
   { label = "Contact", url = "/contact/" },
 ]
 

@@ -7,7 +7,7 @@ icon = "bolt"
 price = "From $19/mo"
 cta_label = "Start a 30-day trial"
 facts = ["Grouping", "On-call routing", "Deploy awareness", "Slack & PagerDuty"]
-eyebrow = "Product 02"
+eyebrow = "Project 02"
 +++
 
 Most paging fatigue is not a monitoring failure. It is a routing failure: the

@@ -155,7 +155,7 @@ def render_index(site: dict, pages: list[dict]) -> str:
             out.append(f"- [{p['title']}]({p['url']}){tag}{desc}")
         out.append("")
 
-    # Everything else, grouped so products and services do not read as one blob.
+    # Everything else, grouped so projects and services do not read as one blob.
     covered = {root + item["url"].rstrip("/") + "/" for item in nav}
     others = [
         p

@@ -1,10 +1,10 @@
 +++
-title = "Products"
-description = "Four products on one shared event pipeline: Observe, Relay, Vault and Lattice. Connect a repository and the rest follows."
+title = "Projects"
+description = "Four projects on one shared event pipeline: Observe, Relay, Vault and Lattice. Connect a repository and the rest follows."
 sort_by = "weight"
 
 [extra]
-eyebrow = "Products"
+eyebrow = "Projects"
 intro = "<p>Each product stands on its own, and all four read from the same event schema — so turning one on does not mean migrating your data before turning on the next.</p>"
 
 [extra.cta]

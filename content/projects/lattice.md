@@ -7,7 +7,7 @@ icon = "network"
 price = "From $29/mo"
 cta_label = "Book a demo"
 facts = ["Service catalogue", "Ownership", "SLO tracking", "Terraform sync"]
-eyebrow = "Product 04"
+eyebrow = "Project 04"
 +++
 
 Most service catalogues are accurate for about three weeks after they are
