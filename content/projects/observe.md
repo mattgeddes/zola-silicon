@@ -10,11 +10,11 @@ facts = ["Traces", "Metrics", "Service maps", "OpenTelemetry"]
 eyebrow = "Project 01"
 +++
 
-{{< extlink(url="https://crates.io/crates/kestrel-observe", label="crates.io", image="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg") >}}
+{{ extlink(url="https://crates.io/crates/kestrel-observe", label="crates.io", image="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg") }}
 
-{{< extlink(url="https://github.com/kestrel/observe", label="GitHub", icon="github") >}}
+{{ extlink(url="https://github.com/kestrel/observe", label="GitHub", icon="github") }}
 
-{{< extlink(url="https://play.google.com/store/apps/details?id=io.kestrel.observe", label="Google Play", icon="arrow-up-right") >}}
+{{ extlink(url="https://play.google.com/store/apps/details?id=io.kestrel.observe", label="Google Play", icon="arrow-up-right") }}
 
 Kestrel Observe is the part most teams adopt first. It reads your repository,
 works out which services talk to which, and attaches instrumentation at build

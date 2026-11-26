@@ -297,16 +297,16 @@ A button: {{ button(text="Get started", url="/contact/", variant="primary", icon
 Hard ceilings need a floor that someone chose.
 {% end %}
 
-{{< video(src="/media/demo.mp4", poster="/images/demo.jpg", caption="...") >}}
+{{ video(src="/media/demo.mp4", poster="/images/demo.jpg", caption="...") }}
 
 External link with a logo (for project pages, package registries, stores):
 
 ```md
-{{< extlink(url="https://crates.io/crates/kestrel", label="crates.io", image="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg") >}}
+{{ extlink(url="https://crates.io/crates/kestrel", label="crates.io", image="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg") }}
 
-{{< extlink(url="https://github.com/kestrel/observe", label="GitHub", icon="github") >}}
+{{ extlink(url="https://github.com/kestrel/observe", label="GitHub", icon="github") }}
 
-{{< extlink(url="https://play.google.com/store/apps/details?id=io.kestrel.observe", label="Google Play", icon="arrow-up-right", variant="primary") >}}
+{{ extlink(url="https://play.google.com/store/apps/details?id=io.kestrel.observe", label="Google Play", icon="arrow-up-right", variant="primary") }}
 ```
 
 `image` (an external logo URL, e.g. from devicons) takes precedence over `icon`
