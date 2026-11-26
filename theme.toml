@@ -25,7 +25,7 @@
 # same.
 [extra]
 # Shown in the footer. Bump alongside the git tag and CHANGELOG.md.
-version = "1.0.1"
+version = "1.0.2"
 
 # Open Graph / Twitter preview image, relative to the site root. Defaults to
 # /og.png (the sample artwork). Replace static/og.png and static/og.svg with
