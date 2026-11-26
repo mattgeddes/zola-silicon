@@ -1,0 +1,31 @@
+{%- import "partials/icons.html" as m -%}
+{#-
+  External link with a logo/icon, for use inside Markdown.
+
+      {{< extlink(url="https://crates.io/crates/kestrel", label="crates.io", image="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg") >}}
+
+      {{< extlink(url="https://github.com/kestrel/observe", label="GitHub", icon="github") >}}
+
+  Required: url, label.
+  Optional:
+    icon  — name from data/icons.toml (renders an inline SVG)
+    image — URL of an external logo (renders an <img>); takes precedence over icon
+    variant — "primary" | "secondary" | "ghost" (default: "secondary")
+#}
+{%- set_global URL = url -%}
+{%- set_global LABEL = label -%}
+{%- set_global VARIANT = "secondary" -%}
+{%- if variant is defined -%}{%- set_global VARIANT = variant -%}{%- endif -%}
+{%- set_global ICON = "" -%}
+{%- if icon is defined -%}{%- set_global ICON = icon -%}{%- endif -%}
+{%- set_global IMAGE = "" -%}
+{%- if image is defined -%}{%- set_global IMAGE = image -%}{%- endif -%}
+<a class="extlink extlink--{{ VARIANT }}" href="{{ URL | safe }}" target="_blank" rel="noopener">
+  {%- if IMAGE != "" %}
+  <img class="extlink__logo" src="{{ IMAGE | safe }}" alt="" width="20" height="20" loading="lazy" decoding="async">
+  {%- elif ICON != "" %}
+  {{ m::icon(name=ICON, size=20) }}
+  {%- endif %}
+  <span class="extlink__label">{{ LABEL }}</span>
+  {{ m::icon(name="arrow-up-right", size=14, cls="extlink__arrow") }}
+</a>

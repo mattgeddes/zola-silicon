@@ -2732,6 +2732,70 @@ pre.mermaid {
   margin-block: 0.25rem;
 }
 
+
+/* -----------------------------------------------------------------------------
+   23. External link chips (repos, stores, packages)
+   -------------------------------------------------------------------------- */
+.extlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--step--1);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.extlink:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-soft-text);
+  transform: translateY(-1px);
+}
+
+.extlink__logo {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: none;
+  object-fit: contain;
+}
+
+.extlink__label {
+  line-height: 1;
+}
+
+.extlink__arrow {
+  margin-left: 0.1rem;
+  opacity: 0.6;
+}
+
+.extlink--primary {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-contrast);
+}
+
+.extlink--primary:hover {
+  background: var(--primary-hover);
+  color: var(--primary-contrast);
+  border-color: var(--primary-hover);
+}
+
+.extlink--ghost {
+  border-color: transparent;
+  background: transparent;
+}
+
+.extlink--ghost:hover {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
 @media print {
   .site-header,
   .site-footer,
